@@ -36,14 +36,14 @@ export class UsersStack extends cdk.Stack {
       })
     ];
 
-    new cdk.CfnOutput(this, 'UserTableName', {
+    new cdk.CfnOutput(this, 'userTableName', {
       value: usersTable.tableName,
-      exportName: 'UserTableName'
+      exportName: 'userTableName'
     });
 
-    new cdk.CfnOutput(this, 'UserTableStreamArn', {
+    new cdk.CfnOutput(this, 'userTableStreamArn', {
       value: usersTable.tableStreamArn || '',
-      exportName: 'UserTableStreamArn'
+      exportName: 'userTableStreamArn'
     });
   }
 }

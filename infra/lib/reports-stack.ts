@@ -68,7 +68,7 @@ export class ReportsStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'userTableStreamArn', {
-      value: cdk.Fn.importValue('UserTableStreamArn')
+      value: cdk.Fn.importValue('userTableStreamArn')
     });
   }
 }
