@@ -27,12 +27,24 @@ const serverlessConfig: AWS = {
       ]
     }
   },
-  plugins: ['serverless-esbuild'],
+  plugins: [
+    'serverless-esbuild',
+    'serverless-dynamodb-local',
+    'serverless-offline'
+  ],
   custom: {
     esbuild: {
       bundle: true,
       minify: true,
       exclude: ['@aws-sdk/*']
+    },
+    dynamodb: {
+      stages: ['dev'],
+      start: {
+        migrate: true,
+        docker: true,
+        noStart: true
+      }
     }
   }
 };

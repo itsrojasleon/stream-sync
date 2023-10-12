@@ -37,8 +37,7 @@ export class UsersStack extends cdk.Stack {
     ];
 
     new cdk.CfnOutput(this, 'userTableName', {
-      value: usersTable.tableName,
-      exportName: 'userTableName'
+      value: usersTable.tableName
     });
 
     new cdk.CfnOutput(this, 'userTableStreamArn', {

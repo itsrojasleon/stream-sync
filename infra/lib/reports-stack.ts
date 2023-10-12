@@ -52,7 +52,7 @@ export class ReportsStack extends cdk.Stack {
       instances: 2,
       credentials: rds.Credentials.fromSecret(secret, 'username'),
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      deletionProtection: false // Change in a serious app.
+      deletionProtection: false
     });
 
     new cdk.CfnOutput(this, 'databaseHostname', {

@@ -1,34 +1,30 @@
 import { dynamo } from '@/clients';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { generateId } from '@/utils';
+import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     if (!process.env.USER_TABLE_NAME) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: 'Missing USER_TABLE_NAME environment variable'
-        })
-      };
+      throw new Error('USER_TABLE_NAME is not defined');
     }
 
-    const body = JSON.parse(event.body || '{}');
+    const id = generateId();
 
-    if (!body.username || !body.email || !body.age) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields' })
-      };
-    }
-
-    const { Attributes = {} } = await dynamo.send(
-      new PutCommand({
-        TableName: process.env.USER_TABLE_NAME,
-        Item: {
-          id: body.username,
-          email: body.email,
-          age: body.age
+    const { UnprocessedItems } = await dynamo.send(
+      new BatchWriteCommand({
+        RequestItems: {
+          [process.env.USER_TABLE_NAME]: [
+            {
+              PutRequest: {
+                Item: {
+                  id,
+                  name: `${id}-name`,
+                  email: `${id}-email`
+                }
+              }
+            }
+          ]
         }
       })
     );
@@ -36,8 +32,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'User successfully created',
-        user: Attributes
+        message: 'Bulk write went successfully'
       })
     };
   } catch (err: any) {
