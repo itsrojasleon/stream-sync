@@ -12,11 +12,7 @@ const serverlessConfig: AWS = {
   functions: {
     createUsers: {
       handler: 'src/lambdas/workers/create.handler',
-      environment: {
-        USER_TABLE_NAME: {
-          Ref: 'UserTable'
-        }
-      },
+      environment: {},
       events: [
         {
           httpApi: {

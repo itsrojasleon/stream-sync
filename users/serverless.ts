@@ -13,10 +13,9 @@ const serverlessConfig: AWS = {
     createUsers: {
       handler: 'src/lambdas/publishers/create.handler',
       environment: {
-        USER_TABLE_NAME: {
-          Ref: 'UserTable'
-        }
+        USER_TABLE_NAME: '${cf:stream-sync-users.userTableName}'
       },
+      timeout: 120, // 2 minutes.
       events: [
         {
           httpApi: {
@@ -27,24 +26,12 @@ const serverlessConfig: AWS = {
       ]
     }
   },
-  plugins: [
-    'serverless-esbuild',
-    'serverless-dynamodb-local',
-    'serverless-offline'
-  ],
+  plugins: ['serverless-esbuild'],
   custom: {
     esbuild: {
       bundle: true,
       minify: true,
       exclude: ['@aws-sdk/*']
-    },
-    dynamodb: {
-      stages: ['dev'],
-      start: {
-        migrate: true,
-        docker: true,
-        noStart: true
-      }
     }
   }
 };

@@ -1,13 +1,13 @@
 {
   "name": "stream-sync-users",
-  "scripts": {
-    "dev": "serverless offline start"
-  },
+  "scripts": {},
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "^3.427.0",
+    "@aws-sdk/client-s3": "^3.427.0",
     "@aws-sdk/lib-dynamodb": "^3.427.0",
     "@serverless/typescript": "^3.30.1",
     "@types/aws-lambda": "^8.10.124",
+    "@types/chance": "^1.1.4",
     "bun-types": "latest",
     "serverless-esbuild": "^1.48.4",
     "serverless-go-plugin": "^2.2.0",
@@ -18,6 +18,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "ulid": "^2.3.0"
+    "ulid": "^2.3.0",
+    "chance": "^1.1.11"
   }
 }

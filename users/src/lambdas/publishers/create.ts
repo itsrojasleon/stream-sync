@@ -1,38 +1,35 @@
-import { dynamo } from '@/clients';
-import { generateId } from '@/utils';
-import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  batcherTransform,
+  dynamoInserterTransform,
+  generateUserStream
+} from '@/utils';
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
+import { pipeline } from 'stream/promises';
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+export const handler: APIGatewayProxyHandlerV2 = async () => {
   try {
     if (!process.env.USER_TABLE_NAME) {
       throw new Error('USER_TABLE_NAME is not defined');
     }
 
-    const id = generateId();
-
-    const { UnprocessedItems } = await dynamo.send(
-      new BatchWriteCommand({
-        RequestItems: {
-          [process.env.USER_TABLE_NAME]: [
-            {
-              PutRequest: {
-                Item: {
-                  id,
-                  name: `${id}-name`,
-                  email: `${id}-email`
-                }
-              }
-            }
-          ]
-        }
-      })
-    );
+    try {
+      await pipeline(
+        generateUserStream(),
+        batcherTransform(25),
+        dynamoInserterTransform(process.env.USER_TABLE_NAME)
+      );
+    } catch (err: any) {
+      if (err.message === 'Unprocessed items') {
+        // TODO: Handle unprocessed items.
+        // A really cool idea would be to send them to a sqs queue.
+        console.log('Unprocessed items', JSON.stringify(err));
+      }
+    }
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Bulk write went successfully'
+        message: 'Bulk user creation went well'
       })
     };
   } catch (err: any) {
