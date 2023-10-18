@@ -14,7 +14,7 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
 
     try {
       await pipeline(
-        generateUserStream(),
+        generateUserStream(5), // 5 MB of user data.
         batcherTransform(25),
         dynamoInserterTransform(process.env.USER_TABLE_NAME)
       );

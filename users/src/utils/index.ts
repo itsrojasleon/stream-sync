@@ -2,19 +2,18 @@ import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { Chance } from 'chance';
 import { Readable, Transform } from 'stream';
 import { monotonicFactory } from 'ulid';
-import { dynamo } from './clients';
-import { User } from './types';
+import { dynamo } from '../clients';
+import { User } from '../types';
 
 export const generateId = () => {
   const ulid = monotonicFactory();
   return ulid();
 };
 
-export const generateUserStream = () => {
-  const totalBytes = 5 * 1024 * 1024; // 5 MB.
+export const generateUserStream = (totalUsers = 1024 * 1024) => {
   const chance = new Chance();
 
-  let generatedBytes = 0;
+  let usersCount = 0;
 
   return new Readable({
     read() {
@@ -26,8 +25,10 @@ export const generateUserStream = () => {
         company: chance.company()
       };
 
+      usersCount++;
+
       this.push(JSON.stringify(user));
-      if (generatedBytes >= totalBytes) {
+      if (usersCount >= totalUsers) {
         this.push(null);
       }
     }
@@ -38,25 +39,26 @@ export const batcherTransform = (batchSize = 25) => {
   if (batchSize < 1 || batchSize > 25) {
     throw new Error('Batch size must be between 1 and 25');
   }
-
-  let batch: User[] = [];
+  let usersBatch: User[] = [];
 
   return new Transform({
     objectMode: true,
     transform(user: User, _, callback) {
-      batch.push(user);
+      usersBatch.push(user);
 
-      if (batch.length >= batchSize) {
-        callback(null, batch);
-        batch = [];
+      if (usersBatch.length >= batchSize) {
+        callback(null, usersBatch);
+        usersBatch = [];
+      } else {
+        callback();
       }
-      callback();
     },
     flush(callback) {
-      if (batch.length > 0) {
-        callback(null, batch);
+      if (usersBatch.length > 0) {
+        callback(null, usersBatch);
+      } else {
+        callback();
       }
-      callback();
     }
   });
 };
