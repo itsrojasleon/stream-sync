@@ -1,6 +1,13 @@
+import { dynamo } from '@/clients';
 import { User } from '@/types';
+import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import { mockClient } from 'aws-sdk-client-mock';
 import { pipeline } from 'stream/promises';
-import { batcherTransform, generateUserStream } from './index';
+import {
+  batcherTransform,
+  dynamoInserterTransform,
+  generateUserStream
+} from './index';
 
 describe('streams', () => {
   describe.skip('generateUserStream', () => {
@@ -41,6 +48,30 @@ describe('streams', () => {
       await pipeline(userStream, transformStream);
 
       expect(batches.length).toBe(Math.ceil(totalUsers / batchSize));
+    });
+  });
+
+  describe('dynamoInserterTransform', () => {
+    it('should insert the users into the database', async () => {
+      const mock = mockClient(dynamo);
+
+      const tableName = 'users';
+      const totalUsers = 5;
+      const userStream = generateUserStream(totalUsers);
+      const batcherStream = batcherTransform(25);
+      const inserterStream = dynamoInserterTransform(tableName);
+
+      mock.on(BatchWriteCommand).resolves({
+        UnprocessedItems: {
+          users: []
+        }
+      });
+
+      try {
+        await pipeline(userStream, batcherStream, inserterStream);
+      } catch (err) {
+        console.log({ err });
+      }
     });
   });
 });

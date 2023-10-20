@@ -80,6 +80,8 @@ export const dynamoInserterTransform = (tableName: string) => {
           })
         );
 
+        console.log({ UnprocessedItems });
+
         if (UnprocessedItems) {
           callback(new Error('Unprocessed items'), UnprocessedItems);
         } else {
