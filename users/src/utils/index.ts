@@ -10,7 +10,7 @@ export const generateId = () => {
   return ulid();
 };
 
-export const generateUserStream = (totalUsers = 1024 * 1024) => {
+export const generateUserStream = (totalUsers: number) => {
   const chance = new Chance();
 
   let usersCount = 0;
@@ -80,10 +80,8 @@ export const dynamoInserterTransform = (tableName: string) => {
           })
         );
 
-        console.log({ UnprocessedItems });
-
         if (UnprocessedItems) {
-          callback(new Error('Unprocessed items'), UnprocessedItems);
+          callback(null, UnprocessedItems);
         } else {
           callback();
         }

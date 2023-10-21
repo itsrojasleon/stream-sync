@@ -12,18 +12,20 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
       throw new Error('USER_TABLE_NAME is not defined');
     }
 
+    const totalUsers = 1000;
+    const batchSize = 25;
+
     try {
       await pipeline(
-        generateUserStream(5), // 5 MB of user data.
-        batcherTransform(25),
+        generateUserStream(totalUsers),
+        batcherTransform(batchSize),
         dynamoInserterTransform(process.env.USER_TABLE_NAME)
       );
     } catch (err: any) {
-      if (err.message === 'Unprocessed items') {
-        // TODO: Handle unprocessed items.
-        // A really cool idea would be to send them to a sqs queue.
-        console.log('Unprocessed items', JSON.stringify(err));
-      }
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: err.message })
+      };
     }
 
     return {

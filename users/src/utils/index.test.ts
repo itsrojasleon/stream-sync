@@ -2,7 +2,7 @@ import { dynamo } from '@/clients';
 import { User } from '@/types';
 import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
-import { pipeline } from 'stream/promises';
+import { pipeline } from 'node:stream/promises';
 import {
   batcherTransform,
   dynamoInserterTransform,
@@ -10,7 +10,7 @@ import {
 } from './index';
 
 describe('streams', () => {
-  describe.skip('generateUserStream', () => {
+  describe('generateUserStream', () => {
     it('should generate a user stream', (done) => {
       const totalUsers = 1;
       const stream = generateUserStream(totalUsers);
@@ -49,6 +49,19 @@ describe('streams', () => {
 
       expect(batches.length).toBe(Math.ceil(totalUsers / batchSize));
     });
+
+    it('should throw an error if the batch size is less than 1 or greater than 25', async () => {
+      try {
+        await pipeline(generateUserStream(1), batcherTransform(26));
+      } catch (err: any) {
+        expect(err.message).toBe('Batch size must be between 1 and 25');
+      }
+      try {
+        await pipeline(generateUserStream(1), batcherTransform(-1));
+      } catch (err: any) {
+        expect(err.message).toBe('Batch size must be between 1 and 25');
+      }
+    });
   });
 
   describe('dynamoInserterTransform', () => {
@@ -67,10 +80,40 @@ describe('streams', () => {
         }
       });
 
+      await pipeline(userStream, batcherStream, inserterStream);
+    });
+
+    it('should return unprocessed items if something went wrong', async () => {
+      const mock = mockClient(dynamo);
+
+      const tableName = 'users';
+      const totalUsers = 5;
+      const userStream = generateUserStream(totalUsers);
+      const batcherStream = batcherTransform(25);
+      const inserterStream = dynamoInserterTransform(tableName);
+
+      mock.on(BatchWriteCommand).resolves({
+        UnprocessedItems: {
+          users: [
+            {
+              PutRequest: {
+                Item: {
+                  id: { S: '123' },
+                  name: { S: 'John Doe' },
+                  email: { S: 'test@test.com' },
+                  age: { N: '20' },
+                  company: { S: 'test' }
+                }
+              }
+            }
+          ]
+        }
+      });
+
       try {
         await pipeline(userStream, batcherStream, inserterStream);
-      } catch (err) {
-        console.log({ err });
+      } catch (err: any) {
+        console.log(err.message);
       }
     });
   });
