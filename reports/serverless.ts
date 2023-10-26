@@ -15,9 +15,14 @@ const serverlessConfig: AWS = {
       environment: {},
       events: [
         {
-          httpApi: {
-            method: 'post',
-            path: '/users'
+          stream: {
+            type: 'dynamodb',
+            arn: {
+              'Fn::ImportValue': 'stream-sync-users:UserTableStreamArn'
+            },
+            batchSize: 25,
+            startingPosition: 'LATEST',
+            functionResponseType: 'ReportBatchItemFailures'
           }
         }
       ]
