@@ -68,7 +68,7 @@ export const dynamoInserterTransform = (tableName: string) => {
     objectMode: true,
     async transform(users: User[], _, callback) {
       try {
-        const { UnprocessedItems } = await dynamo.send(
+        const { UnprocessedItems = {} } = await dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
               [tableName]: users.map((user) => ({
@@ -80,7 +80,7 @@ export const dynamoInserterTransform = (tableName: string) => {
           })
         );
 
-        if (UnprocessedItems) {
+        if (Object.keys(UnprocessedItems).length > 0) {
           callback(null, UnprocessedItems);
         } else {
           callback();
