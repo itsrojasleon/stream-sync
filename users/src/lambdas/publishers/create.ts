@@ -16,12 +16,12 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 
     const totalUsers = body.totalUsers || 1000;
     const batchSize = 25;
+    const maxRetries = 5;
 
     await pipeline(
       generateUserStream(totalUsers),
       batcherTransform(batchSize),
-      // TODO: Get the unprocessed items and retry them using a sqs queue.
-      dynamoInserterTransform(process.env.USER_TABLE_NAME)
+      dynamoInserterTransform(process.env.USER_TABLE_NAME, maxRetries)
     );
 
     return {

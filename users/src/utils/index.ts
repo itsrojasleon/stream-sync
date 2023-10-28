@@ -63,31 +63,68 @@ export const batcherTransform = (batchSize = 25) => {
   });
 };
 
-export const dynamoInserterTransform = (tableName: string) => {
+export const dynamoInserterTransform = (
+  tableName: string,
+  maxRetries: number
+) => {
+  let retryCount = 0;
+  let unprocessedItems: User[];
+
   return new Transform({
     objectMode: true,
     async transform(users: User[], _, callback) {
-      try {
-        const { UnprocessedItems = {} } = await dynamo.send(
-          new BatchWriteCommand({
-            RequestItems: {
-              [tableName]: users.map((user) => ({
-                PutRequest: {
-                  Item: user
-                }
-              }))
-            }
-          })
-        );
+      unprocessedItems = users;
 
-        if (Object.keys(UnprocessedItems).length > 0) {
-          callback(null, UnprocessedItems);
-        } else {
-          callback();
+      try {
+        while (retryCount <= maxRetries && unprocessedItems.length > 0) {
+          const { UnprocessedItems = {} } = await dynamo.send(
+            new BatchWriteCommand({
+              RequestItems: {
+                [tableName]: unprocessedItems.map((user) => ({
+                  PutRequest: {
+                    Item: user
+                  }
+                }))
+              }
+            })
+          );
+
+          if (Object.keys(UnprocessedItems).length > 0) {
+            unprocessedItems = mapUsersToUnprocessedItems(
+              UnprocessedItems,
+              tableName
+            );
+            const retryDelay = exponentialBackoff(retryCount);
+            console.log(
+              `Retrying in ${retryDelay}ms for the ${retryCount + 1} time`
+            );
+            await delay(retryDelay);
+            retryCount++;
+          } else {
+            callback();
+            return;
+          }
         }
       } catch (err: any) {
         callback(err);
       }
+
+      callback(null);
     }
   });
+};
+
+const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+const exponentialBackoff = (retryCount: number) => {
+  return Math.pow(2, retryCount) * 1000;
+};
+
+const mapUsersToUnprocessedItems = (
+  users: Record<string, any[]>,
+  tableName: string
+) => {
+  return users[tableName].map((item) => item.PutRequest?.Item);
 };

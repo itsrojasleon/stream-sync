@@ -72,7 +72,7 @@ describe('streams', () => {
       const totalUsers = 5;
       const userStream = generateUserStream(totalUsers);
       const batcherStream = batcherTransform(25);
-      const inserterStream = dynamoInserterTransform(tableName);
+      const inserterStream = dynamoInserterTransform(tableName, 1);
 
       mock.on(BatchWriteCommand).resolves({
         UnprocessedItems: {
@@ -90,25 +90,30 @@ describe('streams', () => {
       const totalUsers = 5;
       const userStream = generateUserStream(totalUsers);
       const batcherStream = batcherTransform(25);
-      const inserterStream = dynamoInserterTransform(tableName);
+      const inserterStream = dynamoInserterTransform(tableName, 1);
 
-      mock.on(BatchWriteCommand).resolves({
-        UnprocessedItems: {
-          users: [
-            {
-              PutRequest: {
-                Item: {
-                  id: { S: '123' },
-                  name: { S: 'John Doe' },
-                  email: { S: 'test@test.com' },
-                  age: { N: '20' },
-                  company: { S: 'test' }
+      mock
+        .on(BatchWriteCommand)
+        .resolvesOnce({
+          UnprocessedItems: {
+            users: [
+              {
+                PutRequest: {
+                  Item: {
+                    id: { S: '123' },
+                    name: { S: 'John Doe' },
+                    email: { S: 'test@test.com' },
+                    age: { N: '20' },
+                    company: { S: 'test' }
+                  }
                 }
               }
-            }
-          ]
-        }
-      });
+            ]
+          }
+        })
+        .resolvesOnce({
+          UnprocessedItems: {}
+        });
 
       try {
         await pipeline(userStream, batcherStream, inserterStream);

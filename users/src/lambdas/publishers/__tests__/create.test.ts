@@ -46,4 +46,54 @@ describe('create', () => {
     expect(res.body.message).toBe('Bulk user creation went well');
     expect(res.statusCode).toBe(201);
   });
+
+  it('handles unprocessed items', async () => {
+    process.env.USER_TABLE_NAME = 'user';
+
+    const mock = mockClient(dynamo);
+    const user = { id: '1', name: 'name' };
+
+    mock
+      .on(BatchWriteCommand)
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolves({
+        UnprocessedItems: {}
+      });
+
+    // @ts-ignore.
+    const unformattedRes = await handler({
+      body: JSON.stringify({
+        totalUsers: 51
+      })
+    });
+
+    const { body, statusCode } = formatResponse(unformattedRes);
+
+    // 1 from the first stream, 1 from the second stream, 3 from the third stream.
+    expect(mock.calls()).toHaveLength(5);
+
+    expect(body.message).toBe('Bulk user creation went well');
+    expect(statusCode).toBe(201);
+  });
 });
