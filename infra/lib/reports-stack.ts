@@ -11,7 +11,7 @@ interface StackProps extends cdk.StackProps {
 }
 
 export class ReportsStack extends cdk.Stack {
-  policyStatements: iam.PolicyStatement[];
+  policyStatements: iam.PolicyStatement[] = [];
 
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
