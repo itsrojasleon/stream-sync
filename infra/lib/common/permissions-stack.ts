@@ -40,11 +40,11 @@ export class PermissionsStack extends cdk.Stack {
       }
     });
 
-    new cdk.CfnOutput(this, 'usersRole', {
+    new cdk.CfnOutput(this, 'usersRoleArn', {
       value: usersRole.roleArn
     });
 
-    new cdk.CfnOutput(this, 'reportsRole', {
+    new cdk.CfnOutput(this, 'reportsRoleArn', {
       value: reportsRole.roleArn
     });
   }
