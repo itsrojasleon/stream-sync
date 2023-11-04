@@ -1,0 +1,247 @@
+{
+ "Resources": {
+  "credentialsE4920838": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "IncludeSpace": false,
+     "SecretStringTemplate": "{\"username\": \"username\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/credentials/Resource"
+   }
+  },
+  "credentialsAttachment17064646": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "credentialsE4920838"
+    },
+    "TargetId": {
+     "Ref": "databaseEBDE4557"
+    },
+    "TargetType": "AWS::RDS::DBCluster"
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/credentials/Attachment/Resource"
+   }
+  },
+  "databaseSubnetsFA8AAF25": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnets for database database",
+    "SubnetIds": [
+     {
+      "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
+     },
+     {
+      "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/database/Subnets/Default"
+   }
+  },
+  "databaseEBDE4557": {
+   "Type": "AWS::RDS::DBCluster",
+   "Properties": {
+    "CopyTagsToSnapshot": true,
+    "DBClusterParameterGroupName": "default.aurora-postgresql14",
+    "DBSubnetGroupName": {
+     "Ref": "databaseSubnetsFA8AAF25"
+    },
+    "DeletionProtection": false,
+    "Engine": "aurora-postgresql",
+    "EngineVersion": "14.3",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "credentialsE4920838"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": "username",
+    "Port": 5432,
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::ImportValue": "stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/database/Resource"
+   }
+  },
+  "databaseinstance1636995F8": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "DBClusterIdentifier": {
+     "Ref": "databaseEBDE4557"
+    },
+    "DBInstanceClass": "db.t4g.medium",
+    "Engine": "aurora-postgresql",
+    "PromotionTier": 0
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/database/instance1/Resource"
+   }
+  },
+  "databaseinstance200EF09AA": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "DBClusterIdentifier": {
+     "Ref": "databaseEBDE4557"
+    },
+    "DBInstanceClass": "db.t4g.medium",
+    "Engine": "aurora-postgresql",
+    "PromotionTier": 2
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/database/instance2/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VPyw6CMBD8Fu+lBi7qUSUxnkzAu1nKiuVRSHerB8K/W0ASo6fZeWWykdxtZLiCFwUqr4JaZ7JPGVQlvHTrCZVFpgYMFGi9NXFxvJvPNcMVbIG8Z198NGi+Ar/OIGxOso+BIQPCY+2I0YrUZQb5ZFvXjd348CcsyYmcDTEYhcMgEqTWWYWjcXHcuWl8UQdh2hxlSetnuJVh5F8tSevAOsO6QZnM+AbQvD3cBgEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "databaseHostname": {
+   "Value": {
+    "Fn::GetAtt": [
+     "databaseEBDE4557",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "databaseName": {
+   "Value": {
+    "Ref": "databaseEBDE4557"
+   }
+  },
+  "databaseSecretName": {
+   "Value": {
+    "Fn::Join": [
+     "-",
+     [
+      {
+       "Fn::Select": [
+        0,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "credentialsE4920838"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "Fn::Select": [
+        1,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "credentialsE4920838"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "userTableStreamArn": {
+   "Value": {
+    "Fn::ImportValue": "userTableStreamArn"
+   }
+  },
+  "ExportsOutputRefcredentialsE4920838684DEADE": {
+   "Value": {
+    "Ref": "credentialsE4920838"
+   },
+   "Export": {
+    "Name": "stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

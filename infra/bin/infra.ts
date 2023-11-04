@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import * as cdk from 'aws-cdk-lib';
 import 'source-map-support/register';
 import { NetworkingStack } from '../lib/common/networking-stack';

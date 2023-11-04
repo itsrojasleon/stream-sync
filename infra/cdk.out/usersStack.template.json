@@ -1,0 +1,113 @@
+{
+ "Resources": {
+  "usersTable12EF4ADD": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "StreamSpecification": {
+     "StreamViewType": "NEW_IMAGE"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "usersStack/usersTable/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSszTXM1RMLC/WTU7J1s3JTNKrDi5JTM7WAQrFp1TmJebmpwDFQhKTclJ1nNPywIxanaDU4vzSomSwkH9pSUFpCYgFE63VyctPSdXLKtYvM7TQMzQC2pBVnJmpW1SaV5KZm6oXBKEBdJz77X0AAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "usersStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "userTableName": {
+   "Value": {
+    "Ref": "usersTable12EF4ADD"
+   }
+  },
+  "userTableStreamArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "StreamArn"
+    ]
+   },
+   "Export": {
+    "Name": "userTableStreamArn"
+   }
+  },
+  "ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+   }
+  },
+  "ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "StreamArn"
+    ]
+   },
+   "Export": {
+    "Name": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
