@@ -14,6 +14,13 @@ export class NetworkingStack extends cdk.Stack {
       ipAddresses: ec2.IpAddresses.cidr('15.0.0.0/16')
     });
 
+    // TODO: Make sure cdk creates subnets by default!
+    this.vpc.privateSubnets.map((subnet, i) => {
+      new cdk.CfnOutput(this, `privateSubnet${i + 1}Id`, {
+        value: subnet.subnetId
+      });
+    });
+
     this.databaseSecurityGroup = new ec2.SecurityGroup(
       this,
       'databaseSecurityGroup',
