@@ -7,7 +7,10 @@ const serverlessConfig: AWS = {
     name: 'aws',
     stage: '${opt:stage, "test"}',
     runtime: 'nodejs18.x',
-    architecture: 'arm64'
+    architecture: 'arm64',
+    iam: {
+      role: '${cf:stream-sync-permissions.usersRoleArn}'
+    }
   },
   functions: {
     createUsers: {
@@ -15,7 +18,8 @@ const serverlessConfig: AWS = {
       environment: {
         USER_TABLE_NAME: '${cf:stream-sync-users.userTableName}'
       },
-      timeout: 120, // 2 minutes.
+      timeout: 29,
+      memorySize: 512,
       events: [
         {
           httpApi: {
