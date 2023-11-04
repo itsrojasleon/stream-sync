@@ -3,7 +3,6 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 
 interface StackProps extends cdk.StackProps {
@@ -17,12 +16,12 @@ export class ReportsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    const queue = new sqs.Queue(this, 'queue', {
-      deadLetterQueue: {
-        maxReceiveCount: 3,
-        queue: new sqs.Queue(this, 'deadLetterQueue')
-      }
-    });
+    // const queue = new sqs.Queue(this, 'queue', {
+    //   deadLetterQueue: {
+    //     maxReceiveCount: 3,
+    //     queue: new sqs.Queue(this, 'deadLetterQueue')
+    //   }
+    // });
 
     const secret = new secretsmanager.Secret(this, 'credentials', {
       generateSecretString: {
@@ -44,12 +43,16 @@ export class ReportsStack extends cdk.Stack {
       engine: rds.DatabaseClusterEngine.auroraPostgres({
         version: rds.AuroraPostgresEngineVersion.VER_14_3
       }),
-      instanceProps: {
-        vpc: props.vpc,
-        instanceType: new ec2.InstanceType('t4g.medium'),
-        securityGroups: [props.databaseSecurityGroup]
-      },
-      instances: 2,
+      writer: rds.ClusterInstance.provisioned('instance1', {
+        instanceType: new ec2.InstanceType('t4g.medium')
+      }),
+      readers: [
+        rds.ClusterInstance.provisioned('instance2', {
+          instanceType: new ec2.InstanceType('t4g.medium')
+        })
+      ],
+      vpc: props.vpc,
+      securityGroups: [props.databaseSecurityGroup],
       credentials: rds.Credentials.fromSecret(secret, 'username'),
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false
