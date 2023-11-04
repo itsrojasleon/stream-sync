@@ -7,8 +7,19 @@ const serverlessConfig: AWS = {
     name: 'aws',
     stage: '${opt:stage, "test"}',
     runtime: 'nodejs18.x',
-    architecture: 'arm64'
+    architecture: 'arm64',
+    iam: {
+      role: '${cf:stream-sync-permissions.reportsRoleArn}'
+    },
+    vpc: {
+      securityGroupIds: ['${cf:stream-sync-networking.lambdaSecurityGroupId}'],
+      subnetIds: [
+        '${cf:stream-sync-networking.privateSubnet1Id}',
+        '${cf:stream-sync-networking.privateSubnet2Id}'
+      ]
+    }
   },
+
   functions: {
     createUsers: {
       handler: 'src/lambdas/workers/create.handler',

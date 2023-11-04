@@ -12,6 +12,7 @@ export const handler: DynamoDBStreamHandler = async (event) => {
   const failedMessageIds: string[] = [];
 
   const promises = event.Records.map(async (record) => {
+    console.log('record', JSON.stringify(record));
     // record.dynamodb?.NewImage;
     // try {
     // } catch (err) {
