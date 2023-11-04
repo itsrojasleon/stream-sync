@@ -16,6 +16,7 @@ export const generateUserStream = (totalUsers: number) => {
   let usersCount = 0;
 
   return new Readable({
+    objectMode: true,
     read() {
       const user: User = {
         id: generateId(),
