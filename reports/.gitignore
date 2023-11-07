@@ -1,2 +1,2 @@
-# sqlite local db test
-db-test
+# sqlite local database
+db.sqlite
