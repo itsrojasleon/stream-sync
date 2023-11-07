@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfig: AWS = {
-  service: 'stream-sync-users',
+  service: 'backend-stream-sync-users',
   frameworkVersion: '3',
   provider: {
     name: 'aws',
@@ -9,14 +9,14 @@ const serverlessConfig: AWS = {
     runtime: 'nodejs18.x',
     architecture: 'arm64',
     iam: {
-      role: '${cf:stream-sync-permissions.usersRoleArn}'
+      role: '${cf:infra-stream-sync-permissions.usersRoleArn}'
     }
   },
   functions: {
     createUsers: {
       handler: 'src/lambdas/publishers/create.handler',
       environment: {
-        USER_TABLE_NAME: '${cf:stream-sync-users.userTableName}'
+        USER_TABLE_NAME: '${cf:infra-stream-sync-users.userTableName}'
       },
       timeout: 29,
       memorySize: 512,

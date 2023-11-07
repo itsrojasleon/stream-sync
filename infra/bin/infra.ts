@@ -16,24 +16,24 @@ const env = {
 
 const networkingStack = new NetworkingStack(app, 'networkingStack', {
   env,
-  stackName: 'stream-sync-networking'
+  stackName: 'infra-stream-sync-networking'
 });
 
 const reportsStack = new ReportsStack(app, 'reportsStack', {
   env,
   vpc: networkingStack.vpc,
   databaseSecurityGroup: networkingStack.databaseSecurityGroup,
-  stackName: 'stream-sync-reports'
+  stackName: 'infra-stream-sync-reports'
 });
 
 const usersStack = new UsersStack(app, 'usersStack', {
   env,
-  stackName: 'stream-sync-users'
+  stackName: 'infra-stream-sync-users'
 });
 
 new PermissionsStack(app, 'permissionsStack', {
   env,
   usersPolicyStatements: usersStack.policyStatements,
   reportsPolicyStatements: reportsStack.policyStatements,
-  stackName: 'stream-sync-permissions'
+  stackName: 'infra-stream-sync-permissions'
 });
