@@ -8,7 +8,7 @@ export const dataSource = new DataSource({
   type: IS_DEV ? 'sqlite' : 'postgres',
   host: 'localhost',
   port: 5432,
-  database: IS_DEV ? 'db-test' : 'test',
+  database: IS_DEV ? 'db.sqlite' : 'test',
   username: 'test',
   password: 'test',
   synchronize: IS_DEV,
