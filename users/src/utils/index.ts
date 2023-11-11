@@ -40,11 +40,11 @@ export const batcherTransform = (batchSize = 25) => {
   if (batchSize < 1 || batchSize > 25) {
     throw new Error('Batch size must be between 1 and 25');
   }
-  let usersBatch: User[] = [];
+  let usersBatch: string[] = [];
 
   return new Transform({
     objectMode: true,
-    transform(user: User, _, callback) {
+    transform(user: string, _, callback) {
       usersBatch.push(user);
 
       if (usersBatch.length >= batchSize) {
@@ -73,8 +73,8 @@ export const dynamoInserterTransform = (
 
   return new Transform({
     objectMode: true,
-    async transform(users: User[], _, callback) {
-      unprocessedItems = users;
+    async transform(users: string[], _, callback) {
+      unprocessedItems = users.map((u) => JSON.parse(u));
 
       try {
         while (retryCount <= maxRetries && unprocessedItems.length > 0) {
