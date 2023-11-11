@@ -24,16 +24,17 @@ const serverlessConfig: AWS = {
 
   functions: {
     createUsers: {
-      handler: 'src/lambdas/workers/create.handler',
+      handler: 'src/lambdas/workers/create-users.handler',
       environment: {},
       events: [
         {
           stream: {
             type: 'dynamodb',
-            arn: '${cf:infra-stream-sync-users.UserTableStreamArn}',
+            arn: '${cf:infra-stream-sync-reports.userTableStreamArn}',
             batchSize: 500,
             startingPosition: 'LATEST',
-            functionResponseType: 'ReportBatchItemFailures'
+            functionResponseType: 'ReportBatchItemFailures',
+            maximumRetryAttempts: 10
           }
         }
       ]
@@ -44,7 +45,7 @@ const serverlessConfig: AWS = {
     esbuild: {
       bundle: true,
       minify: true,
-      exclude: ['@aws-sdk/*']
+      exclude: ['@aws-sdk/*', 'nock', 'mock-aws-s3', '@mapbox']
     }
   }
 };
