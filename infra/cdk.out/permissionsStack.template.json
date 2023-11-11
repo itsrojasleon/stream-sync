@@ -46,10 +46,10 @@
       "PolicyDocument": {
        "Statement": [
         {
-         "Action": "dynamodb:PutItem",
+         "Action": "dynamodb:BatchWriteItem",
          "Effect": "Allow",
          "Resource": {
-          "Fn::ImportValue": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
          }
         },
         {
@@ -61,7 +61,7 @@
          ],
          "Effect": "Allow",
          "Resource": {
-          "Fn::ImportValue": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
          }
         }
        ],
@@ -124,7 +124,26 @@
          "Action": "secretsmanager:GetSecretValue",
          "Effect": "Allow",
          "Resource": {
-          "Fn::ImportValue": "stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+          "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+         }
+        },
+        {
+         "Action": "dynamodb:BatchWriteItem",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+         }
+        },
+        {
+         "Action": [
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListStreams"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
          }
         }
        ],

@@ -565,7 +565,7 @@
   "databaseSecurityGroupfromnetworkingStacklambdaSecurityGroup1C66300C5432DAE20408": {
    "Type": "AWS::EC2::SecurityGroupIngress",
    "Properties": {
-    "Description": "Allow lambda access to database",
+    "Description": "Allow lambda functions access to the database",
     "FromPort": 5432,
     "GroupId": {
      "Fn::GetAtt": [
@@ -644,7 +644,7 @@
     "Ref": "vpcPrivateSubnet1Subnet934893E8"
    },
    "Export": {
-    "Name": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
+    "Name": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
    }
   },
   "ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE": {
@@ -652,7 +652,7 @@
     "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
    },
    "Export": {
-    "Name": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
+    "Name": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
    }
   },
   "ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF": {
@@ -663,7 +663,7 @@
     ]
    },
    "Export": {
-    "Name": "stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
+    "Name": "infra-stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
    }
   }
  },

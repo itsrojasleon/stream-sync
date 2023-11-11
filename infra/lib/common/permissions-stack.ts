@@ -35,7 +35,11 @@ export class PermissionsStack extends cdk.Stack {
       managedPolicies,
       inlinePolicies: {
         inlinePolicy: new iam.PolicyDocument({
-          statements: props.reportsPolicyStatements
+          statements: [
+            ...props.reportsPolicyStatements,
+            // Note: We'll be using only the dynamo stream permissions for now.
+            ...props.usersPolicyStatements
+          ]
         })
       }
     });

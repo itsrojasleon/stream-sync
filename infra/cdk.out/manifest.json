@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/0cd9f11894590244c61fdc69d40166075fb6d82660eabbfbe20655f0cd7e719b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/2216fa06b9775e2b73f1cb72c3d91ca70f74813cfcddb655c375ed2d7893606a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -29,7 +29,7 @@
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         },
-        "stackName": "stream-sync-networking"
+        "stackName": "infra-stream-sync-networking"
       },
       "dependencies": [
         "networkingStack.assets"
@@ -289,7 +289,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/135824796c17509544f65f407853ddb1cea8310e58da2c69bdacad436c72203a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/b56dcaf19881479f7581f80514d353a6ccd1f761d3ceeecb006e727983478e41.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -300,7 +300,7 @@
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         },
-        "stackName": "stream-sync-reports"
+        "stackName": "infra-stream-sync-reports"
       },
       "dependencies": [
         "networkingStack",
@@ -411,7 +411,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/83679f030d197905fd3ff050e76f6bf77886ce36e048ea964361e63e22c0036d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/362c612fb57e440c615327e2369a6c7c9bee4edea134aeddc55da677fe3efba1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -422,7 +422,7 @@
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         },
-        "stackName": "stream-sync-users"
+        "stackName": "infra-stream-sync-users"
       },
       "dependencies": [
         "usersStack.assets"
@@ -496,7 +496,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/38be9d227772746d55daf3420724f2222e914b0ec3976f2e2669d45fb1b1f6e8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/2b03a2869700b4aa1a3995877a6b44229396cad3bb03fe01098405a90a70d25b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -507,7 +507,7 @@
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         },
-        "stackName": "stream-sync-permissions"
+        "stackName": "infra-stream-sync-permissions"
       },
       "dependencies": [
         "usersStack",

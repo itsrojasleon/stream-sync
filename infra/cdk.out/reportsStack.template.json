@@ -37,10 +37,10 @@
     "DBSubnetGroupDescription": "Subnets for database database",
     "SubnetIds": [
      {
-      "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
+      "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
      },
      {
-      "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
+      "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
      }
     ]
    },
@@ -75,7 +75,7 @@
     "Port": 5432,
     "VpcSecurityGroupIds": [
      {
-      "Fn::ImportValue": "stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
+      "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
      }
     ]
    },
@@ -206,7 +206,7 @@
     "Ref": "credentialsE4920838"
    },
    "Export": {
-    "Name": "stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+    "Name": "infra-stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
    }
   }
  },

@@ -725,7 +725,7 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
                   "aws:cdk:cloudformation:props": {
-                    "description": "Allow lambda access to database",
+                    "description": "Allow lambda functions access to the database",
                     "fromPort": 5432,
                     "groupId": {
                       "Fn::GetAtt": [
@@ -958,10 +958,10 @@
                         "dbSubnetGroupDescription": "Subnets for database database",
                         "subnetIds": [
                           {
-                            "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
+                            "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet1Subnet934893E8236E2271"
                           },
                           {
-                            "Fn::ImportValue": "stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
+                            "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputRefvpcPrivateSubnet2Subnet7031C2BA60DCB1EE"
                           }
                         ]
                       }
@@ -1015,7 +1015,7 @@
                     "port": 5432,
                     "vpcSecurityGroupIds": [
                       {
-                        "Fn::ImportValue": "stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
+                        "Fn::ImportValue": "infra-stream-sync-networking:ExportsOutputFnGetAttdatabaseSecurityGroupC7B2A60CGroupId87760BDF"
                       }
                     ]
                   }
@@ -1378,10 +1378,10 @@
                         "policyDocument": {
                           "Statement": [
                             {
-                              "Action": "dynamodb:PutItem",
+                              "Action": "dynamodb:BatchWriteItem",
                               "Effect": "Allow",
                               "Resource": {
-                                "Fn::ImportValue": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
                               }
                             },
                             {
@@ -1393,7 +1393,7 @@
                               ],
                               "Effect": "Allow",
                               "Resource": {
-                                "Fn::ImportValue": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
                               }
                             }
                           ],
@@ -1479,7 +1479,26 @@
                               "Action": "secretsmanager:GetSecretValue",
                               "Effect": "Allow",
                               "Resource": {
-                                "Fn::ImportValue": "stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+                                "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+                              }
+                            },
+                            {
+                              "Action": "dynamodb:BatchWriteItem",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+                              }
+                            },
+                            {
+                              "Action": [
+                                "dynamodb:DescribeStream",
+                                "dynamodb:GetRecords",
+                                "dynamodb:GetShardIterator",
+                                "dynamodb:ListStreams"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
                               }
                             }
                           ],

@@ -61,7 +61,7 @@
     ]
    },
    "Export": {
-    "Name": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+    "Name": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
    }
   },
   "ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF": {
@@ -72,7 +72,7 @@
     ]
    },
    "Export": {
-    "Name": "stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+    "Name": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
    }
   }
  },

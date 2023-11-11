@@ -21,7 +21,7 @@ export class UsersStack extends cdk.Stack {
     this.policyStatements = [
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
+        actions: ['dynamodb:BatchWriteItem'],
         resources: [usersTable.tableArn]
       }),
       new iam.PolicyStatement({
