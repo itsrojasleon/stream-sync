@@ -1,4 +1,5 @@
-import { dynamo } from '@/clients';
+import { dynamo, secretsManager } from '@/clients';
+import { GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { mockClient } from 'aws-sdk-client-mock';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -19,8 +20,19 @@ afterAll(async () => {
 });
 
 describe('create-users', () => {
+  process.env.DATABASE_SECRET_NAME = 'test';
+
   it('should create users', async () => {
-    const mock = mockClient(dynamo);
+    const dynamoMock = mockClient(dynamo);
+    const secretsMock = mockClient(secretsManager);
+
+    secretsMock.on(GetSecretValueCommand).resolves({
+      SecretString: JSON.stringify({
+        port: 5432,
+        engine: 'sqlite',
+        database: 'db.sqlite'
+      })
+    });
 
     const records = Array.from({ length: 2 }, () => ({
       dynamodb: {
@@ -34,9 +46,12 @@ describe('create-users', () => {
     }));
 
     // @ts-ignore.
-    const result = await handler({
-      Records: records
-    });
+    const result = await handler(
+      {
+        Records: records
+      },
+      {}
+    );
 
     expect(result).toEqual({
       batchItemFailures: []

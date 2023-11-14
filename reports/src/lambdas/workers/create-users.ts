@@ -1,4 +1,4 @@
-import { dataSource } from '@/data-source';
+import { getDataSource } from '@/data-source';
 import { User } from '@/entity/user';
 import { formatUserFromDynamoStream } from '@/utils';
 import { DynamoDBStreamHandler } from 'aws-lambda';
@@ -6,9 +6,16 @@ import { DataSource } from 'typeorm';
 
 let db: DataSource | null = null;
 
-export const handler: DynamoDBStreamHandler = async (event) => {
+export const handler: DynamoDBStreamHandler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  console.log(
+    'NewImage',
+    event.Records.map((r) => r.dynamodb?.NewImage)
+  );
   if (!db) {
-    db = await dataSource.initialize();
+    const ds = await getDataSource();
+    db = await ds.initialize();
   }
 
   const failedMessageIds: string[] = [];
@@ -16,8 +23,6 @@ export const handler: DynamoDBStreamHandler = async (event) => {
   const users = event.Records.map((record) => {
     return formatUserFromDynamoStream(record.dynamodb?.NewImage!);
   });
-
-  console.log({ users });
 
   const res = await db
     .createQueryBuilder()
@@ -41,7 +46,6 @@ export const handler: DynamoDBStreamHandler = async (event) => {
   });
 
   await Promise.allSettled(promises);
-
   return {
     batchItemFailures: failedMessageIds.map((id) => ({
       itemIdentifier: id
