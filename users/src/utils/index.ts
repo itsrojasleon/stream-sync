@@ -77,7 +77,7 @@ export const dynamoInserterTransform = (
       unprocessedItems = users.map((u) => JSON.parse(u));
 
       try {
-        while (retryCount <= maxRetries && unprocessedItems.length > 0) {
+        while (retryCount < maxRetries && unprocessedItems.length > 0) {
           const { UnprocessedItems = {} } = await dynamo.send(
             new BatchWriteCommand({
               RequestItems: {
@@ -96,21 +96,38 @@ export const dynamoInserterTransform = (
               tableName
             );
             const retryDelay = exponentialBackoff(retryCount);
-            console.log(
+            console.info(
               `Retrying in ${retryDelay}ms for the ${retryCount + 1} time`
             );
             await delay(retryDelay);
             retryCount++;
           } else {
+            // All items were processed successfully.
             callback();
             return;
           }
         }
+
+        console.log('hello?');
+
+        // If we reach this point, it means we have unprocessed items.
+        if (unprocessedItems.length > 0) {
+          callback(null, unprocessedItems);
+        }
       } catch (err: any) {
         callback(err);
       }
+    }
+  });
+};
 
-      callback(null);
+export const queueUnprocessedItemsTransform = () => {
+  return new Transform({
+    objectMode: true,
+    transform(users: User[], _, callback) {
+      console.log('Unprocessed items', users);
+
+      callback();
     }
   });
 };

@@ -1,7 +1,8 @@
 import {
   batcherTransform,
   dynamoInserterTransform,
-  generateUserStream
+  generateUserStream,
+  queueUnprocessedItemsTransform
 } from '@/utils';
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { pipeline } from 'stream/promises';
@@ -16,12 +17,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 
     const totalUsers = body.totalUsers || 1000;
     const batchSize = 25;
-    const maxRetries = 5;
+    const maxRetries = 3;
 
     await pipeline(
       generateUserStream(totalUsers),
       batcherTransform(batchSize),
-      dynamoInserterTransform(process.env.USER_TABLE_NAME, maxRetries)
+      dynamoInserterTransform(process.env.USER_TABLE_NAME, maxRetries),
+      queueUnprocessedItemsTransform()
     );
 
     return {

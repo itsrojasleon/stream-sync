@@ -96,4 +96,129 @@ describe('create', () => {
     expect(body.message).toBe('Bulk user creation went well');
     expect(statusCode).toBe(201);
   });
+
+  it('queues unprocessed items', async () => {
+    jest.setTimeout(300000);
+    process.env.USER_TABLE_NAME = 'user';
+
+    const mock = mockClient(dynamo);
+    const user = { id: '1', name: 'name' };
+
+    mock
+      .on(BatchWriteCommand)
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      })
+      .resolvesOnce({
+        UnprocessedItems: {
+          user: [
+            {
+              PutRequest: {
+                Item: user
+              }
+            }
+          ]
+        }
+      });
+    // .resolves({
+    //   UnprocessedItems: {}
+    // });
+
+    // @ts-ignore.
+    const unformattedRes = await handler({
+      body: JSON.stringify({
+        totalUsers: 51
+      })
+    });
+
+    const { body, statusCode } = formatResponse(unformattedRes);
+
+    expect(body.message).toBe('Bulk user creation went well');
+    expect(statusCode).toBe(201);
+  });
 });
