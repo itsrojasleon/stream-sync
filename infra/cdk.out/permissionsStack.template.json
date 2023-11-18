@@ -65,7 +65,7 @@
          }
         },
         {
-         "Action": "sqs:SendBatchMessage",
+         "Action": "sqs:*",
          "Effect": "Allow",
          "Resource": {
           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
@@ -154,7 +154,7 @@
          }
         },
         {
-         "Action": "sqs:SendBatchMessage",
+         "Action": "sqs:*",
          "Effect": "Allow",
          "Resource": {
           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"

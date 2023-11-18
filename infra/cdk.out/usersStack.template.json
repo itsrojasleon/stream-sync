@@ -80,6 +80,19 @@
     "Name": "userTableStreamArn"
    }
   },
+  "unprocessedUsersQueueArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "unprocessedUsersQueueD6A2DC06",
+     "Arn"
+    ]
+   }
+  },
+  "unprocessedUsersQueueUrl": {
+   "Value": {
+    "Ref": "unprocessedUsersQueueD6A2DC06"
+   }
+  },
   "ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190": {
    "Value": {
     "Fn::GetAtt": [
