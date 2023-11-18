@@ -1,8 +1,12 @@
+import {
+  SendMessageBatchCommand,
+  SendMessageBatchRequestEntry
+} from '@aws-sdk/client-sqs';
 import { BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { Chance } from 'chance';
 import { Readable, Transform } from 'stream';
 import { monotonicFactory } from 'ulid';
-import { dynamo } from '../clients';
+import { dynamo, sqs } from '../clients';
 import { User } from '../types';
 
 export const generateId = () => {
@@ -108,8 +112,6 @@ export const dynamoInserterTransform = (
           }
         }
 
-        console.log('hello?');
-
         // If we reach this point, it means we have unprocessed items.
         if (unprocessedItems.length > 0) {
           callback(null, unprocessedItems);
@@ -121,13 +123,38 @@ export const dynamoInserterTransform = (
   });
 };
 
-export const queueUnprocessedItemsTransform = () => {
+export const handleUnprocessedItemsTransform = (queueUrl: string) => {
   return new Transform({
     objectMode: true,
-    transform(users: User[], _, callback) {
-      console.log('Unprocessed items', users);
+    async transform(users: User[], _, callback) {
+      console.log({ users });
+      try {
+        const chunkSize = 10;
+        const chunks = [];
 
-      callback();
+        for (let i = 0; i < users.length; i += chunkSize) {
+          chunks.push(users.slice(i, i + chunkSize));
+        }
+
+        const promises = chunks.map(async (chunk) => {
+          const entries: SendMessageBatchRequestEntry[] = chunk.map((user) => ({
+            Id: user.id,
+            MessageBody: JSON.stringify(user)
+          }));
+
+          await sqs.send(
+            new SendMessageBatchCommand({
+              QueueUrl: queueUrl,
+              Entries: entries
+            })
+          );
+        });
+
+        await Promise.all(promises);
+        callback();
+      } catch (err: any) {
+        callback(err);
+      }
     }
   });
 };

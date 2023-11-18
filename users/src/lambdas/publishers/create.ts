@@ -2,7 +2,7 @@ import {
   batcherTransform,
   dynamoInserterTransform,
   generateUserStream,
-  queueUnprocessedItemsTransform
+  handleUnprocessedItemsTransform
 } from '@/utils';
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { pipeline } from 'stream/promises';
@@ -11,6 +11,9 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     if (!process.env.USER_TABLE_NAME) {
       throw new Error('USER_TABLE_NAME is not defined');
+    }
+    if (!process.env.UNPROCESSED_USERS_QUEUE_URL) {
+      throw new Error('UNPROCESSED_USERS_QUEUE_URL is not defined');
     }
 
     const body = JSON.parse(event.body || '{}');
@@ -23,7 +26,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       generateUserStream(totalUsers),
       batcherTransform(batchSize),
       dynamoInserterTransform(process.env.USER_TABLE_NAME, maxRetries),
-      queueUnprocessedItemsTransform()
+      handleUnprocessedItemsTransform(process.env.UNPROCESSED_USERS_QUEUE_URL)
     );
 
     return {

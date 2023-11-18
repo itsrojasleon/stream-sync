@@ -13,6 +13,11 @@ const serverlessConfig: AWS = {
     }
   },
   functions: {
+    // NOTE: The user creation logic should have been implemented in a
+    // worker lambda just because of the fact that we have 30 seconds
+    // to process all the users.
+    // One great way would be to upload all users to S3 in a csv file and
+    // then trigger a lambda that would process the file.
     createUsers: {
       handler: 'src/lambdas/publishers/create.handler',
       environment: {
@@ -25,6 +30,23 @@ const serverlessConfig: AWS = {
           httpApi: {
             method: 'post',
             path: '/users'
+          }
+        }
+      ]
+    },
+    handleUnprocessedUsers: {
+      handler: 'src/lambdas/consumers/handle-unprocessed-users.handler',
+      environment: {
+        UNPROCESSED_USERS_QUEUE_URL:
+          '${cf:infra-stream-sync-users.unprocessedUsersQueueUrl}'
+      },
+      timeout: 20,
+      memorySize: 512,
+      events: [
+        {
+          stream: {
+            type: 'dynamodb',
+            arn: '${cf:infra-stream-sync-users.userTableStreamArn}'
           }
         }
       ]

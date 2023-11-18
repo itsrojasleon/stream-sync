@@ -8,6 +8,7 @@
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "^3.427.0",
     "@aws-sdk/client-s3": "^3.427.0",
+    "@aws-sdk/client-sqs": "^3.454.0",
     "@aws-sdk/lib-dynamodb": "^3.427.0",
     "@serverless/typescript": "^3.30.1",
     "@types/aws-lambda": "^8.10.124",
@@ -27,7 +28,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "ulid": "^2.3.0",
-    "chance": "^1.1.11"
+    "chance": "^1.1.11",
+    "ulid": "^2.3.0"
   }
 }
