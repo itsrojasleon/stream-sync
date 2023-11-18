@@ -42,8 +42,7 @@ export class NetworkingStack extends cdk.Stack {
     this.databaseSecurityGroup.addIngressRule(
       lambdaSecurityGroup,
       ec2.Port.tcp(5432),
-      'Allow lambda functions access to the database',
-      false
+      'Allow lambda functions access to the database'
     );
 
     new cdk.CfnOutput(this, 'VpcId', {
