@@ -30,7 +30,7 @@ describe('create-users', () => {
       SecretString: JSON.stringify({
         port: 5432,
         engine: 'sqlite',
-        database: 'db.sqlite'
+        dbClusterIdentifier: 'db.sqlite'
       })
     });
 

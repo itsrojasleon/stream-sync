@@ -21,21 +21,28 @@ const getCredentials = async () => {
 };
 
 export const getDataSource = async () => {
-  const { password, port, host, username, engine, database } =
+  const { password, port, host, username, engine, dbClusterIdentifier } =
     await getCredentials();
 
   return new DataSource({
     type: engine,
+    database: dbClusterIdentifier,
     host,
     port,
     username,
     password,
-    // Note: database will be only used for sqlite (development env).
-    database,
     synchronize: true,
     logging: true,
+    ssl: true,
     entities: [User],
     subscribers: [],
     migrations: []
+    // extra: {
+    //   ssl: {
+    //     rejectUnauthorized: false
+    //   }
+    // }
+    // Note: database will be only used for sqlite (development env).
+    // ...(database && { database })
   });
 };
