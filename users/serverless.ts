@@ -21,7 +21,9 @@ const serverlessConfig: AWS = {
     createUsers: {
       handler: 'src/lambdas/publishers/create.handler',
       environment: {
-        USER_TABLE_NAME: '${cf:infra-stream-sync-users.userTableName}'
+        USER_TABLE_NAME: '${cf:infra-stream-sync-users.userTableName}',
+        UNPROCESSED_USERS_QUEUE_URL:
+          '${cf:infra-stream-sync-users.unprocessedUsersQueueUrl}'
       },
       timeout: 29,
       memorySize: 512,
@@ -36,17 +38,12 @@ const serverlessConfig: AWS = {
     },
     handleUnprocessedUsers: {
       handler: 'src/lambdas/consumers/handle-unprocessed-users.handler',
-      environment: {
-        UNPROCESSED_USERS_QUEUE_URL:
-          '${cf:infra-stream-sync-users.unprocessedUsersQueueUrl}'
-      },
       timeout: 20,
       memorySize: 512,
       events: [
         {
-          stream: {
-            type: 'dynamodb',
-            arn: '${cf:infra-stream-sync-users.userTableStreamArn}'
+          sqs: {
+            arn: '${cf:infra-stream-sync-users.unprocessedUsersQueueArn}'
           }
         }
       ]

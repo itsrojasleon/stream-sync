@@ -59,6 +59,9 @@ export class UsersStack extends cdk.Stack {
       exportName: 'userTableStreamArn'
     });
 
+    new cdk.CfnOutput(this, 'unprocessedUsersQueueArn', {
+      value: unprocessedUsersQueue.queueArn
+    });
     new cdk.CfnOutput(this, 'unprocessedUsersQueueUrl', {
       value: unprocessedUsersQueue.queueUrl
     });
