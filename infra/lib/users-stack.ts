@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 
 export class UsersStack extends cdk.Stack {
@@ -18,6 +19,14 @@ export class UsersStack extends cdk.Stack {
       stream: dynamodb.StreamViewType.NEW_IMAGE
     });
 
+    const unprocessedUsersDLQ = new sqs.Queue(this, 'unprocessedUsersDLQ');
+    const unprocessedUsersQueue = new sqs.Queue(this, 'unprocessedUsersQueue', {
+      deadLetterQueue: {
+        queue: unprocessedUsersDLQ,
+        maxReceiveCount: 3
+      }
+    });
+
     this.policyStatements = [
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
@@ -33,6 +42,11 @@ export class UsersStack extends cdk.Stack {
           'dynamodb:ListStreams'
         ],
         resources: [usersTable.tableStreamArn || '']
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['sqs:SendBatchMessage'],
+        resources: [unprocessedUsersQueue.queueArn]
       })
     ];
 
