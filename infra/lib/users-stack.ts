@@ -45,7 +45,7 @@ export class UsersStack extends cdk.Stack {
       }),
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ['sqs:SendBatchMessage'],
+        actions: ['sqs:*'],
         resources: [unprocessedUsersQueue.queueArn]
       })
     ];

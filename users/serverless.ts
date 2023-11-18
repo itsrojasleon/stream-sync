@@ -37,7 +37,7 @@ const serverlessConfig: AWS = {
       ]
     },
     handleUnprocessedUsers: {
-      handler: 'src/lambdas/consumers/handle-unprocessed-users.handler',
+      handler: 'src/lambdas/workers/handle-unprocessed-users.handler',
       timeout: 20,
       memorySize: 512,
       events: [
