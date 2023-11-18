@@ -63,6 +63,13 @@
          "Resource": {
           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
          }
+        },
+        {
+         "Action": "sqs:SendBatchMessage",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+         }
         }
        ],
        "Version": "2012-10-17"
@@ -144,6 +151,13 @@
          "Effect": "Allow",
          "Resource": {
           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+         }
+        },
+        {
+         "Action": "sqs:SendBatchMessage",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
          }
         }
        ],

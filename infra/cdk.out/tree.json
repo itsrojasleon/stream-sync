@@ -1230,6 +1230,60 @@
               "version": "2.97.1"
             }
           },
+          "unprocessedUsersDLQ": {
+            "id": "unprocessedUsersDLQ",
+            "path": "usersStack/unprocessedUsersDLQ",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "usersStack/unprocessedUsersDLQ/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.97.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.97.1"
+            }
+          },
+          "unprocessedUsersQueue": {
+            "id": "unprocessedUsersQueue",
+            "path": "usersStack/unprocessedUsersQueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "usersStack/unprocessedUsersQueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "redrivePolicy": {
+                      "deadLetterTargetArn": {
+                        "Fn::GetAtt": [
+                          "unprocessedUsersDLQ90787D09",
+                          "Arn"
+                        ]
+                      },
+                      "maxReceiveCount": 3
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.97.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.97.1"
+            }
+          },
           "userTableName": {
             "id": "userTableName",
             "path": "usersStack/userTableName",
@@ -1279,6 +1333,14 @@
               "Output{\"Fn::GetAtt\":[\"usersTable12EF4ADD\",\"StreamArn\"]}": {
                 "id": "Output{\"Fn::GetAtt\":[\"usersTable12EF4ADD\",\"StreamArn\"]}",
                 "path": "usersStack/Exports/Output{\"Fn::GetAtt\":[\"usersTable12EF4ADD\",\"StreamArn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.97.1"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"unprocessedUsersQueueD6A2DC06\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"unprocessedUsersQueueD6A2DC06\",\"Arn\"]}",
+                "path": "usersStack/Exports/Output{\"Fn::GetAtt\":[\"unprocessedUsersQueueD6A2DC06\",\"Arn\"]}",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.97.1"
@@ -1395,6 +1457,13 @@
                               "Resource": {
                                 "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
                               }
+                            },
+                            {
+                              "Action": "sqs:SendBatchMessage",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+                              }
                             }
                           ],
                           "Version": "2012-10-17"
@@ -1499,6 +1568,13 @@
                               "Effect": "Allow",
                               "Resource": {
                                 "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+                              }
+                            },
+                            {
+                              "Action": "sqs:SendBatchMessage",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
                               }
                             }
                           ],

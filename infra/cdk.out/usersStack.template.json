@@ -26,10 +26,37 @@
     "aws:cdk:path": "usersStack/usersTable/Resource"
    }
   },
+  "unprocessedUsersDLQ90787D09": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "usersStack/unprocessedUsersDLQ/Resource"
+   }
+  },
+  "unprocessedUsersQueueD6A2DC06": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "RedrivePolicy": {
+     "deadLetterTargetArn": {
+      "Fn::GetAtt": [
+       "unprocessedUsersDLQ90787D09",
+       "Arn"
+      ]
+     },
+     "maxReceiveCount": 3
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "usersStack/unprocessedUsersQueue/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSszTXM1RMLC/WTU7J1s3JTNKrDi5JTM7WAQrFp1TmJebmpwDFQhKTclJ1nNPywIxanaDU4vzSomSwkH9pSUFpCYgFE63VyctPSdXLKtYvM7TQMzQC2pBVnJmpW1SaV5KZm6oXBKEBdJz77X0AAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zXNyw7CIBCF4WdxD2Poprr2AYzVvaEwJvQCtsPUGMK7ixhX58+3OQ0cW1A7/SJp7Cgn10O6Rm1GUeie7NvrOdiCN91PKE4PXyMLWgjShZEr1shZdEiBV1PtzPHJ8Vt/zcIHizDQflMHUE05Hsg5ubKPbkbofvsBiaikrpQAAAA="
    },
    "Metadata": {
     "aws:cdk:path": "usersStack/CDKMetadata/Default"
@@ -73,6 +100,17 @@
    },
    "Export": {
     "Name": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+   }
+  },
+  "ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B": {
+   "Value": {
+    "Fn::GetAtt": [
+     "unprocessedUsersQueueD6A2DC06",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
    }
   }
  },
