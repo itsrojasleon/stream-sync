@@ -4,21 +4,26 @@ import { formatUserFromDynamoStream } from '@/utils';
 import { DynamoDBStreamHandler } from 'aws-lambda';
 import { DataSource } from 'typeorm';
 
-let db: DataSource | null = null;
+let db: DataSource | undefined;
 
 export const handler: DynamoDBStreamHandler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  if (!db) {
-    const dataSource = await getDataSource();
-    db = await dataSource.initialize();
-  }
-
-  const users = event.Records.map((record) => {
-    return formatUserFromDynamoStream(record.dynamodb?.NewImage!);
-  });
-
   try {
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    if (!db) {
+      console.log('Initializing DB');
+      const dataSource = await getDataSource();
+      db = await dataSource.initialize();
+    }
+
+    console.log('Event received', JSON.stringify(event, null, 2));
+
+    const users = event.Records.map((record) => {
+      return formatUserFromDynamoStream(record.dynamodb?.NewImage!);
+    });
+
+    console.log({ users });
+
     const res = await db
       .createQueryBuilder()
       .insert()
@@ -27,7 +32,7 @@ export const handler: DynamoDBStreamHandler = async (event, context) => {
       .useTransaction(true)
       .execute();
 
-    console.log({ res });
+    console.log(res);
 
     return {
       batchItemFailures: []

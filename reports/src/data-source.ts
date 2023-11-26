@@ -33,16 +33,8 @@ export const getDataSource = async () => {
     password,
     synchronize: true,
     logging: true,
-    ssl: true,
     entities: [User],
     subscribers: [],
     migrations: []
-    // extra: {
-    //   ssl: {
-    //     rejectUnauthorized: false
-    //   }
-    // }
-    // Note: database will be only used for sqlite (development env).
-    // ...(database && { database })
   });
 };

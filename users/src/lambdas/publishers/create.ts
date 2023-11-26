@@ -33,7 +33,10 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       statusCode: 201,
       body: JSON.stringify({
         message: 'Bulk user creation went well'
-      })
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
   } catch (err: any) {
     console.error(err);

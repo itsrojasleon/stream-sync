@@ -13,18 +13,18 @@ const serverlessConfig: AWS = {
     },
     vpc: {
       securityGroupIds: [
-        '${cf:infra-stream-sync-networking.lambdaSecurityGroupId}'
+        '${cf:infra-stream-sync-reports.lambdaSecurityGroupId}'
       ],
       subnetIds: [
-        '${cf:infra-stream-sync-networking.privateSubnet1Id}',
-        '${cf:infra-stream-sync-networking.privateSubnet2Id}'
+        '${cf:infra-stream-sync-reports.isolatedSubnet1Id}',
+        '${cf:infra-stream-sync-reports.isolatedSubnet2Id}'
       ]
     }
   },
-
   functions: {
     createUsers: {
       handler: 'src/lambdas/workers/create-users.handler',
+      timeout: 6,
       environment: {
         DATABASE_SECRET_NAME:
           '${cf:infra-stream-sync-reports.databaseSecretName}'
