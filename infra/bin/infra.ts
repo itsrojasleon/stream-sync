@@ -2,7 +2,6 @@
 
 import * as cdk from 'aws-cdk-lib';
 import 'source-map-support/register';
-import { NetworkingStack } from '../lib/common/networking-stack';
 import { PermissionsStack } from '../lib/common/permissions-stack';
 import { ReportsStack } from '../lib/reports-stack';
 import { UsersStack } from '../lib/users-stack';
@@ -14,15 +13,8 @@ const env = {
   region: process.env.CDK_DEFAULT_REGION
 };
 
-const networkingStack = new NetworkingStack(app, 'networkingStack', {
-  env,
-  stackName: 'infra-stream-sync-networking'
-});
-
 const reportsStack = new ReportsStack(app, 'reportsStack', {
   env,
-  vpc: networkingStack.vpc,
-  databaseSecurityGroup: networkingStack.databaseSecurityGroup,
   stackName: 'infra-stream-sync-reports'
 });
 
