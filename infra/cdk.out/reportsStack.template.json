@@ -3,7 +3,7 @@
   "vpcA2121C38": {
    "Type": "AWS::EC2::VPC",
    "Properties": {
-    "CidrBlock": "15.0.0.0/16",
+    "CidrBlock": "10.0.0.0/16",
     "EnableDnsHostnames": true,
     "EnableDnsSupport": true,
     "InstanceTenancy": "default",
@@ -18,24 +18,24 @@
     "aws:cdk:path": "reportsStack/vpc/Resource"
    }
   },
-  "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C": {
+  "vpcprivatesubnetSubnet1SubnetD01ADF6B": {
    "Type": "AWS::EC2::Subnet",
    "Properties": {
     "AvailabilityZone": "us-east-1a",
-    "CidrBlock": "15.0.0.0/17",
+    "CidrBlock": "10.0.0.0/24",
     "MapPublicIpOnLaunch": false,
     "Tags": [
      {
       "Key": "aws-cdk:subnet-name",
-      "Value": "rds isolated subnet"
+      "Value": "private subnet"
      },
      {
       "Key": "aws-cdk:subnet-type",
-      "Value": "Isolated"
+      "Value": "Private"
      },
      {
       "Key": "Name",
-      "Value": "reportsStack/vpc/rds isolated subnetSubnet1"
+      "Value": "reportsStack/vpc/private subnetSubnet1"
      }
     ],
     "VpcId": {
@@ -43,16 +43,16 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet1/Subnet"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet1/Subnet"
    }
   },
-  "vpcrdsisolatedsubnetSubnet1RouteTable2A68E267": {
+  "vpcprivatesubnetSubnet1RouteTable0C52DAE1": {
    "Type": "AWS::EC2::RouteTable",
    "Properties": {
     "Tags": [
      {
       "Key": "Name",
-      "Value": "reportsStack/vpc/rds isolated subnetSubnet1"
+      "Value": "reportsStack/vpc/private subnetSubnet1"
      }
     ],
     "VpcId": {
@@ -60,41 +60,56 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet1/RouteTable"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet1/RouteTable"
    }
   },
-  "vpcrdsisolatedsubnetSubnet1RouteTableAssociationBBE53540": {
+  "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452": {
    "Type": "AWS::EC2::SubnetRouteTableAssociation",
    "Properties": {
     "RouteTableId": {
-     "Ref": "vpcrdsisolatedsubnetSubnet1RouteTable2A68E267"
+     "Ref": "vpcprivatesubnetSubnet1RouteTable0C52DAE1"
     },
     "SubnetId": {
-     "Ref": "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C"
+     "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet1/RouteTableAssociation"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet1/RouteTableAssociation"
    }
   },
-  "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70": {
+  "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "vpcpublicsubnetSubnet1NATGatewayB99B76CB"
+    },
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet1RouteTable0C52DAE1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet1/DefaultRoute"
+   }
+  },
+  "vpcprivatesubnetSubnet2SubnetAD6E7C1E": {
    "Type": "AWS::EC2::Subnet",
    "Properties": {
     "AvailabilityZone": "us-east-1b",
-    "CidrBlock": "15.0.128.0/17",
+    "CidrBlock": "10.0.1.0/24",
     "MapPublicIpOnLaunch": false,
     "Tags": [
      {
       "Key": "aws-cdk:subnet-name",
-      "Value": "rds isolated subnet"
+      "Value": "private subnet"
      },
      {
       "Key": "aws-cdk:subnet-type",
-      "Value": "Isolated"
+      "Value": "Private"
      },
      {
       "Key": "Name",
-      "Value": "reportsStack/vpc/rds isolated subnetSubnet2"
+      "Value": "reportsStack/vpc/private subnetSubnet2"
      }
     ],
     "VpcId": {
@@ -102,16 +117,16 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet2/Subnet"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet2/Subnet"
    }
   },
-  "vpcrdsisolatedsubnetSubnet2RouteTable89A86AB4": {
+  "vpcprivatesubnetSubnet2RouteTableBC84F013": {
    "Type": "AWS::EC2::RouteTable",
    "Properties": {
     "Tags": [
      {
       "Key": "Name",
-      "Value": "reportsStack/vpc/rds isolated subnetSubnet2"
+      "Value": "reportsStack/vpc/private subnetSubnet2"
      }
     ],
     "VpcId": {
@@ -119,21 +134,260 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet2/RouteTable"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet2/RouteTable"
    }
   },
-  "vpcrdsisolatedsubnetSubnet2RouteTableAssociationF5D4052C": {
+  "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF": {
    "Type": "AWS::EC2::SubnetRouteTableAssociation",
    "Properties": {
     "RouteTableId": {
-     "Ref": "vpcrdsisolatedsubnetSubnet2RouteTable89A86AB4"
+     "Ref": "vpcprivatesubnetSubnet2RouteTableBC84F013"
     },
     "SubnetId": {
-     "Ref": "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70"
+     "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
     }
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/vpc/rds isolated subnetSubnet2/RouteTableAssociation"
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "vpcprivatesubnetSubnet2DefaultRoute7BF2E662": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "vpcpublicsubnetSubnet1NATGatewayB99B76CB"
+    },
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet2RouteTableBC84F013"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/private subnetSubnet2/DefaultRoute"
+   }
+  },
+  "vpcpublicsubnetSubnet1Subnet00D7FC63": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/Subnet"
+   }
+  },
+  "vpcpublicsubnetSubnet1RouteTable8125563E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/RouteTable"
+   }
+  },
+  "vpcpublicsubnetSubnet1RouteTableAssociation31DC149C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet1RouteTable8125563E"
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "vpcpublicsubnetSubnet1DefaultRoute4347D983": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet1RouteTable8125563E"
+    }
+   },
+   "DependsOn": [
+    "vpcVPCGW7984C166"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/DefaultRoute"
+   }
+  },
+  "vpcpublicsubnetSubnet1EIP2ACC3706": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/EIP"
+   }
+  },
+  "vpcpublicsubnetSubnet1NATGatewayB99B76CB": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "vpcpublicsubnetSubnet1EIP2ACC3706",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "vpcpublicsubnetSubnet1DefaultRoute4347D983",
+    "vpcpublicsubnetSubnet1RouteTableAssociation31DC149C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet1/NATGateway"
+   }
+  },
+  "vpcpublicsubnetSubnet2Subnet0D317893": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet2/Subnet"
+   }
+  },
+  "vpcpublicsubnetSubnet2RouteTable915C41C6": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc/public subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet2/RouteTable"
+   }
+  },
+  "vpcpublicsubnetSubnet2RouteTableAssociation909CA1C6": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet2RouteTable915C41C6"
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet2Subnet0D317893"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "vpcpublicsubnetSubnet2DefaultRoute39C23CE6": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet2RouteTable915C41C6"
+    }
+   },
+   "DependsOn": [
+    "vpcVPCGW7984C166"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/public subnetSubnet2/DefaultRoute"
+   }
+  },
+  "vpcIGWE57CBDCA": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/IGW"
+   }
+  },
+  "vpcVPCGW7984C166": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/vpc/VPCGW"
    }
   },
   "vpcRestrictDefaultSecurityGroupCustomResourceA6EBC6D0": {
@@ -247,81 +501,113 @@
     "aws:asset:property": "Code"
    }
   },
-  "secretsManagerVpcEndpointSecurityGroup9D75303B": {
-   "Type": "AWS::EC2::SecurityGroup",
+  "VpcFlowLogsGroupC5F6A8C5": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "GroupDescription": "reportsStack/secretsManagerVpcEndpoint/SecurityGroup",
-    "SecurityGroupEgress": [
-     {
-      "CidrIp": "0.0.0.0/0",
-      "Description": "Allow all outbound traffic by default",
-      "IpProtocol": "-1"
-     }
-    ],
-    "SecurityGroupIngress": [
-     {
-      "CidrIp": {
-       "Fn::GetAtt": [
-        "vpcA2121C38",
-        "CidrBlock"
-       ]
-      },
-      "Description": {
-       "Fn::Join": [
-        "",
-        [
-         "from ",
-         {
-          "Fn::GetAtt": [
-           "vpcA2121C38",
-           "CidrBlock"
-          ]
-         },
-         ":443"
-        ]
-       ]
-      },
-      "FromPort": 443,
-      "IpProtocol": "tcp",
-      "ToPort": 443
-     }
-    ],
-    "VpcId": {
-     "Ref": "vpcA2121C38"
-    }
+    "RetentionInDays": 7
    },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
    "Metadata": {
-    "aws:cdk:path": "reportsStack/secretsManagerVpcEndpoint/SecurityGroup/Resource"
+    "aws:cdk:path": "reportsStack/VpcFlowLogsGroup/Resource"
    }
   },
-  "secretsManagerVpcEndpointCE15BA1A": {
-   "Type": "AWS::EC2::VPCEndpoint",
+  "VpcFlowLogIAMRoleB4DCB624": {
+   "Type": "AWS::IAM::Role",
    "Properties": {
-    "PrivateDnsEnabled": true,
-    "SecurityGroupIds": [
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
      {
-      "Fn::GetAtt": [
-       "secretsManagerVpcEndpointSecurityGroup9D75303B",
-       "GroupId"
-      ]
+      "Key": "Name",
+      "Value": "reportsStack/VpcFlowLog"
      }
-    ],
-    "ServiceName": "com.amazonaws.us-east-1.secretsmanager",
-    "SubnetIds": [
-     {
-      "Ref": "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C"
-     },
-     {
-      "Ref": "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70"
-     }
-    ],
-    "VpcEndpointType": "Interface",
-    "VpcId": {
-     "Ref": "vpcA2121C38"
-    }
+    ]
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/secretsManagerVpcEndpoint/Resource"
+    "aws:cdk:path": "reportsStack/VpcFlowLog/IAMRole/Resource"
+   }
+  },
+  "VpcFlowLogIAMRoleDefaultPolicy7533133B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "VpcFlowLogsGroupC5F6A8C5",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "iam:PassRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "VpcFlowLogIAMRoleB4DCB624",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "VpcFlowLogIAMRoleDefaultPolicy7533133B",
+    "Roles": [
+     {
+      "Ref": "VpcFlowLogIAMRoleB4DCB624"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/VpcFlowLog/IAMRole/DefaultPolicy/Resource"
+   }
+  },
+  "VpcFlowLogF72230C7": {
+   "Type": "AWS::EC2::FlowLog",
+   "Properties": {
+    "DeliverLogsPermissionArn": {
+     "Fn::GetAtt": [
+      "VpcFlowLogIAMRoleB4DCB624",
+      "Arn"
+     ]
+    },
+    "LogDestinationType": "cloud-watch-logs",
+    "LogGroupName": {
+     "Ref": "VpcFlowLogsGroupC5F6A8C5"
+    },
+    "ResourceId": {
+     "Ref": "vpcA2121C38"
+    },
+    "ResourceType": "VPC",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/VpcFlowLog"
+     }
+    ],
+    "TrafficType": "ALL"
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/VpcFlowLog/FlowLog"
    }
   },
   "databaseSecurityGroupC7B2A60C": {
@@ -386,27 +672,55 @@
     "aws:cdk:path": "reportsStack/lambdaSecurityGroup/Resource"
    }
   },
-  "credentialsE4920838": {
+  "databaseSubnetsFA8AAF25": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnets for database database",
+    "SubnetIds": [
+     {
+      "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+     },
+     {
+      "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/database/Subnets/Default"
+   }
+  },
+  "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb": {
    "Type": "AWS::SecretsManager::Secret",
    "Properties": {
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Generated by the CDK for stack: ",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    },
     "GenerateSecretString": {
-     "ExcludePunctuation": true,
+     "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
      "GenerateStringKey": "password",
-     "IncludeSpace": false,
-     "SecretStringTemplate": "{\"username\": \"username\"}"
+     "PasswordLength": 30,
+     "SecretStringTemplate": "{\"username\":\"postgres\"}"
     }
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "reportsStack/credentials/Resource"
+    "aws:cdk:path": "reportsStack/database/Secret/Resource"
    }
   },
-  "credentialsAttachment17064646": {
+  "databaseSecretAttachment5618DFB3": {
    "Type": "AWS::SecretsManager::SecretTargetAttachment",
    "Properties": {
     "SecretId": {
-     "Ref": "credentialsE4920838"
+     "Ref": "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb"
     },
     "TargetId": {
      "Ref": "databaseEBDE4557"
@@ -414,24 +728,7 @@
     "TargetType": "AWS::RDS::DBCluster"
    },
    "Metadata": {
-    "aws:cdk:path": "reportsStack/credentials/Attachment/Resource"
-   }
-  },
-  "databaseSubnetsFA8AAF25": {
-   "Type": "AWS::RDS::DBSubnetGroup",
-   "Properties": {
-    "DBSubnetGroupDescription": "Subnets for database database",
-    "SubnetIds": [
-     {
-      "Ref": "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C"
-     },
-     {
-      "Ref": "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70"
-     }
-    ]
-   },
-   "Metadata": {
-    "aws:cdk:path": "reportsStack/database/Subnets/Default"
+    "aws:cdk:path": "reportsStack/database/Secret/Attachment/Resource"
    }
   },
   "databaseEBDE4557": {
@@ -451,13 +748,13 @@
       [
        "{{resolve:secretsmanager:",
        {
-        "Ref": "credentialsE4920838"
+        "Ref": "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb"
        },
        ":SecretString:password::}}"
       ]
      ]
     },
-    "MasterUsername": "username",
+    "MasterUsername": "postgres",
     "Port": 5432,
     "VpcSecurityGroupIds": [
      {
@@ -486,8 +783,10 @@
     "PubliclyAccessible": false
    },
    "DependsOn": [
-    "vpcrdsisolatedsubnetSubnet1RouteTableAssociationBBE53540",
-    "vpcrdsisolatedsubnetSubnet2RouteTableAssociationF5D4052C"
+    "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA",
+    "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452",
+    "vpcprivatesubnetSubnet2DefaultRoute7BF2E662",
+    "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -507,8 +806,10 @@
     "PubliclyAccessible": false
    },
    "DependsOn": [
-    "vpcrdsisolatedsubnetSubnet1RouteTableAssociationBBE53540",
-    "vpcrdsisolatedsubnetSubnet2RouteTableAssociationF5D4052C"
+    "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA",
+    "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452",
+    "vpcprivatesubnetSubnet2DefaultRoute7BF2E662",
+    "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -519,7 +820,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21RwW7CMAz9lt3TTPSy7cjKNHEaAsR1clNTAtSpYodpqvrvM2WjE9vJ9ntP9rOd26cHO7mDD85cdciOvrTdSsAdjELvHbrcdpvWmWJLm0VhFtGfQHCVSkI5g2O2DElwDeURR3zEpszBeRAfyMxJMG7BoTZ+oaoNnsSs0KXo5fM1htQOHW4BnX9V3/JzqiMy94bRRRRugKDGqLsM9bf+nF3CGmKNMhXddNcg/RLcMr2JFdtuBgIlMBbHxOreXPa7eps9/wF+lEMxJxYgh31vlsghRadXUj40Y6kn/J9axHDylbbSI6Lod2pP9Vn/lqRN6pBChXbP96fJo53k+s49e5/FROIbtMtL/AKHEMwB6gEAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEVTftitzUlGxtMiXOpqnqf8dt6YcQ4mT7+cV5z8lCPj3I+R1c/Uxlp1mhU1ntCNRJMPRRoVrI6nBWYv1pDvFaxE5fgHAXUoPUgGOW2EC4h7TAER+xpfdWaSBtzUAWcUgLrcYRz1HchDegLV9yhVtTRYbQMWECsZKfakms9atEQ+KlsNdXmzf9Pt2hCk7TbetsOLeq/gUikzv0vhaFzb2seMLA6/NaaChlldjOZRtjyyZaXV1WC5fx8Q0QpOBxXQTPDkRnc5i4WU2Bnsx6XLeLzao/2BaR8QRGYS18S/ElGMjRyapz0Zzqwh5cjjRZzED43alrkaC3wSk2w3fZcizZ29+t2NmLzlgWvygSf5Vcm3bp74HOgWphbIby6O8v80c5X/DfOnqtZy4Y0iXKpIvfZmUL6XcCAAA="
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -527,14 +828,14 @@
   }
  },
  "Outputs": {
-  "isolatedSubnet1Id": {
+  "privateSubnet1Id": {
    "Value": {
-    "Ref": "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C"
+    "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
    }
   },
-  "isolatedSubnet2Id": {
+  "privateSubnet2Id": {
    "Value": {
-    "Ref": "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70"
+    "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
    }
   },
   "databaseHostname": {
@@ -568,7 +869,7 @@
              "Fn::Split": [
               ":",
               {
-               "Ref": "credentialsE4920838"
+               "Ref": "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb"
               }
              ]
             }
@@ -591,7 +892,7 @@
              "Fn::Split": [
               ":",
               {
-               "Ref": "credentialsE4920838"
+               "Ref": "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb"
               }
              ]
             }
@@ -618,12 +919,12 @@
     ]
    }
   },
-  "ExportsOutputRefcredentialsE4920838684DEADE": {
+  "ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA": {
    "Value": {
-    "Ref": "credentialsE4920838"
+    "Ref": "databaseSecretAttachment5618DFB3"
    },
    "Export": {
-    "Name": "infra-stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+    "Name": "infra-stream-sync-reports:ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
    }
   }
  },

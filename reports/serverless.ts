@@ -16,8 +16,8 @@ const serverlessConfig: AWS = {
         '${cf:infra-stream-sync-reports.lambdaSecurityGroupId}'
       ],
       subnetIds: [
-        '${cf:infra-stream-sync-reports.isolatedSubnet1Id}',
-        '${cf:infra-stream-sync-reports.isolatedSubnet2Id}'
+        '${cf:infra-stream-sync-reports.privateSubnet1Id}',
+        '${cf:infra-stream-sync-reports.privateSubnet2Id}'
       ]
     }
   },
@@ -27,7 +27,8 @@ const serverlessConfig: AWS = {
       timeout: 6,
       environment: {
         DATABASE_SECRET_NAME:
-          '${cf:infra-stream-sync-reports.databaseSecretName}'
+          '${cf:infra-stream-sync-reports.databaseSecretName}',
+        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}'
       },
       events: [
         {
@@ -38,6 +39,12 @@ const serverlessConfig: AWS = {
             startingPosition: 'LATEST',
             functionResponseType: 'ReportBatchItemFailures',
             maximumRetryAttempts: 10
+          }
+        },
+        {
+          http: {
+            method: 'get',
+            path: '/hello'
           }
         }
       ]

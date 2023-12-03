@@ -131,7 +131,7 @@
          "Action": "secretsmanager:GetSecretValue",
          "Effect": "Allow",
          "Resource": {
-          "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputRefcredentialsE4920838684DEADE"
+          "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
          }
         },
         {

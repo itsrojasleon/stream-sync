@@ -21,13 +21,14 @@ const getCredentials = async () => {
 };
 
 export const getDataSource = async () => {
-  const { password, port, host, username, engine, dbClusterIdentifier } =
-    await getCredentials();
+  if (!process.env.DATABASE_HOSTNAME) {
+    throw new Error('No database hostname found');
+  }
+  const { password, port, username, engine } = await getCredentials();
 
   return new DataSource({
     type: engine,
-    database: dbClusterIdentifier,
-    host,
+    host: process.env.DATABASE_HOSTNAME,
     port,
     username,
     password,

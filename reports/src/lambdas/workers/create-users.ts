@@ -22,17 +22,13 @@ export const handler: DynamoDBStreamHandler = async (event, context) => {
       return formatUserFromDynamoStream(record.dynamodb?.NewImage!);
     });
 
-    console.log({ users });
-
-    const res = await db
+    await db
       .createQueryBuilder()
       .insert()
       .into(User)
       .values(users)
       .useTransaction(true)
       .execute();
-
-    console.log(res);
 
     return {
       batchItemFailures: []

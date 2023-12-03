@@ -1,8 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as rds from 'aws-cdk-lib/aws-rds';
-import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 
 export class ReportsStack extends cdk.Stack {
@@ -13,25 +13,34 @@ export class ReportsStack extends cdk.Stack {
 
     const vpc = new ec2.Vpc(this, 'vpc', {
       maxAzs: 2,
-      ipAddresses: ec2.IpAddresses.cidr('15.0.0.0/16'),
+      natGateways: 1,
       subnetConfiguration: [
         {
-          name: 'rds isolated subnet',
-          subnetType: ec2.SubnetType.PRIVATE_ISOLATED
+          name: 'private subnet',
+          cidrMask: 24,
+          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS
+        },
+        // TODO: For the bastion host.
+        {
+          name: 'public subnet',
+          cidrMask: 24,
+          subnetType: ec2.SubnetType.PUBLIC
         }
       ]
     });
 
-    // Allow the lambda functions to access secrets manager.
-    new ec2.InterfaceVpcEndpoint(this, 'secretsManagerVpcEndpoint', {
-      vpc,
-      service: ec2.InterfaceVpcEndpointAwsService.SECRETS_MANAGER,
-      privateDnsEnabled: true
+    const logGroup = new logs.LogGroup(this, 'VpcFlowLogsGroup', {
+      retention: logs.RetentionDays.ONE_WEEK
     });
 
-    vpc.isolatedSubnets.map((subnet, i) => {
-      console.log(`isolatedSubnet${i + 1}Id: ${subnet.subnetId}`);
-      new cdk.CfnOutput(this, `isolatedSubnet${i + 1}Id`, {
+    new ec2.FlowLog(this, 'VpcFlowLog', {
+      resourceType: ec2.FlowLogResourceType.fromVpc(vpc),
+      destination: ec2.FlowLogDestination.toCloudWatchLogs(logGroup)
+    });
+
+    vpc.privateSubnets.map((subnet, i) => {
+      console.log(`privateSubnet${i + 1}Id: ${subnet.subnetId}`);
+      new cdk.CfnOutput(this, `privateSubnet${i + 1}Id`, {
         value: subnet.subnetId
       });
     });
@@ -60,28 +69,6 @@ export class ReportsStack extends cdk.Stack {
       'Allow lambda functions access to the database'
     );
 
-    databaseSecurityGroup.addIngressRule(
-      lambdaSecurityGroup,
-      ec2.Port.tcp(5432),
-      'Allow lambda functions access to the database'
-    );
-
-    const secret = new secretsmanager.Secret(this, 'credentials', {
-      generateSecretString: {
-        secretStringTemplate: '{"username": "username"}',
-        generateStringKey: 'password',
-        includeSpace: false,
-        excludePunctuation: true
-      }
-    });
-
-    this.policyStatements.push(
-      new iam.PolicyStatement({
-        actions: ['secretsmanager:GetSecretValue'],
-        resources: [secret.secretArn]
-      })
-    );
-
     const database = new rds.DatabaseCluster(this, 'database', {
       engine: rds.DatabaseClusterEngine.auroraPostgres({
         version: rds.AuroraPostgresEngineVersion.VER_14_3
@@ -97,12 +84,19 @@ export class ReportsStack extends cdk.Stack {
       vpc,
       securityGroups: [databaseSecurityGroup],
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS
       },
-      credentials: rds.Credentials.fromSecret(secret, 'username'),
+      credentials: rds.Credentials.fromGeneratedSecret('postgres'),
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false
     });
+
+    this.policyStatements.push(
+      new iam.PolicyStatement({
+        actions: ['secretsmanager:GetSecretValue'],
+        resources: [database.secret?.secretArn || '']
+      })
+    );
 
     new cdk.CfnOutput(this, 'databaseHostname', {
       value: database.clusterEndpoint.hostname
@@ -113,7 +107,7 @@ export class ReportsStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'databaseSecretName', {
-      value: secret.secretName
+      value: database.secret?.secretName || ''
     });
 
     new cdk.CfnOutput(this, 'userTableStreamArn', {

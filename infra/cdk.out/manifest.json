@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/74dad6d1d5473d11053b5a580788b9aa1412c355422b10c1771824067ada23dc.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/50e29d59259589bc1d33a05e677c44c1b5503e12bd9ebc354ccc7f6a4c0732ff.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -41,40 +41,124 @@
             "data": "vpcA2121C38"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet1/Subnet": [
+        "/reportsStack/vpc/private subnetSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet1SubnetD06D4D8C"
+            "data": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet1/RouteTable": [
+        "/reportsStack/vpc/private subnetSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet1RouteTable2A68E267"
+            "data": "vpcprivatesubnetSubnet1RouteTable0C52DAE1"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet1/RouteTableAssociation": [
+        "/reportsStack/vpc/private subnetSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet1RouteTableAssociationBBE53540"
+            "data": "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet2/Subnet": [
+        "/reportsStack/vpc/private subnetSubnet1/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet2SubnetE5CEEC70"
+            "data": "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet2/RouteTable": [
+        "/reportsStack/vpc/private subnetSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet2RouteTable89A86AB4"
+            "data": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
           }
         ],
-        "/reportsStack/vpc/rds isolated subnetSubnet2/RouteTableAssociation": [
+        "/reportsStack/vpc/private subnetSubnet2/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "vpcrdsisolatedsubnetSubnet2RouteTableAssociationF5D4052C"
+            "data": "vpcprivatesubnetSubnet2RouteTableBC84F013"
+          }
+        ],
+        "/reportsStack/vpc/private subnetSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF"
+          }
+        ],
+        "/reportsStack/vpc/private subnetSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcprivatesubnetSubnet2DefaultRoute7BF2E662"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1RouteTable8125563E"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1RouteTableAssociation31DC149C"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1DefaultRoute4347D983"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1EIP2ACC3706"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet1NATGatewayB99B76CB"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet2Subnet0D317893"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet2RouteTable915C41C6"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet2RouteTableAssociation909CA1C6"
+          }
+        ],
+        "/reportsStack/vpc/public subnetSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcpublicsubnetSubnet2DefaultRoute39C23CE6"
+          }
+        ],
+        "/reportsStack/vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcIGWE57CBDCA"
+          }
+        ],
+        "/reportsStack/vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "vpcVPCGW7984C166"
           }
         ],
         "/reportsStack/vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
@@ -95,28 +179,40 @@
             "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
           }
         ],
-        "/reportsStack/secretsManagerVpcEndpoint/SecurityGroup/Resource": [
+        "/reportsStack/VpcFlowLogsGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "secretsManagerVpcEndpointSecurityGroup9D75303B"
+            "data": "VpcFlowLogsGroupC5F6A8C5"
           }
         ],
-        "/reportsStack/secretsManagerVpcEndpoint/Resource": [
+        "/reportsStack/VpcFlowLog/IAMRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "secretsManagerVpcEndpointCE15BA1A"
+            "data": "VpcFlowLogIAMRoleB4DCB624"
           }
         ],
-        "/reportsStack/isolatedSubnet1Id": [
+        "/reportsStack/VpcFlowLog/IAMRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "isolatedSubnet1Id"
+            "data": "VpcFlowLogIAMRoleDefaultPolicy7533133B"
           }
         ],
-        "/reportsStack/isolatedSubnet2Id": [
+        "/reportsStack/VpcFlowLog/FlowLog": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "isolatedSubnet2Id"
+            "data": "VpcFlowLogF72230C7"
+          }
+        ],
+        "/reportsStack/privateSubnet1Id": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "privateSubnet1Id"
+          }
+        ],
+        "/reportsStack/privateSubnet2Id": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "privateSubnet2Id"
           }
         ],
         "/reportsStack/databaseSecurityGroup/Resource": [
@@ -137,22 +233,22 @@
             "data": "lambdaSecurityGroup2DB5E13D"
           }
         ],
-        "/reportsStack/credentials/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "credentialsE4920838"
-          }
-        ],
-        "/reportsStack/credentials/Attachment/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "credentialsAttachment17064646"
-          }
-        ],
         "/reportsStack/database/Subnets/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "databaseSubnetsFA8AAF25"
+          }
+        ],
+        "/reportsStack/database/Secret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "reportsStackdatabaseSecretBDB5EBBF3fdaad7efa858a3daf9490cf0a702aeb"
+          }
+        ],
+        "/reportsStack/database/Secret/Attachment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "databaseSecretAttachment5618DFB3"
           }
         ],
         "/reportsStack/database/Resource": [
@@ -209,10 +305,10 @@
             "data": "CDKMetadata"
           }
         ],
-        "/reportsStack/Exports/Output{\"Ref\":\"credentialsE4920838\"}": [
+        "/reportsStack/Exports/Output{\"Ref\":\"databaseSecretAttachment5618DFB3\"}": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ExportsOutputRefcredentialsE4920838684DEADE"
+            "data": "ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
           }
         ],
         "/reportsStack/BootstrapVersion": [
@@ -362,7 +458,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-deploy-role-934646758481-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-cfn-exec-role-934646758481-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/e300884d07d8e87348ef5947b7238752d042de3f683c241599050aee6f57f625.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-934646758481-us-east-1/a0d9515b5493307b20c6f2d0901df1a38ebad9419cf8995aa0d1926530baeae8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
