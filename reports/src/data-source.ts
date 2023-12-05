@@ -24,7 +24,7 @@ export const getDataSource = async () => {
   if (!process.env.DATABASE_HOSTNAME) {
     throw new Error('No database hostname found');
   }
-  const { password, port, username, engine } = await getCredentials();
+  const { password, port, username, engine, database } = await getCredentials();
 
   return new DataSource({
     type: engine,
@@ -32,6 +32,10 @@ export const getDataSource = async () => {
     port,
     username,
     password,
+    // Note: Just for development.
+    ...(database && {
+      database
+    }),
     synchronize: true,
     logging: true,
     entities: [User],

@@ -1,15 +1,19 @@
-# stream-sync
+# stream sync users
 
 To install dependencies:
 
 ```bash
-bun install
+pnpm install
 ```
 
-To run:
+## Deployment
 
-```bash
-bun run serverless.ts
+```shell
+pnpm run deploy
 ```
 
-This project was created using `bun init` in bun v1.0.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## Destroy
+
+```shell
+pnpm run destroy
+```

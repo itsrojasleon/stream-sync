@@ -1,4 +1,4 @@
-import { dynamo, secretsManager } from '@/clients';
+import { secretsManager } from '@/clients';
 import { GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { mockClient } from 'aws-sdk-client-mock';
 import fs from 'node:fs/promises';
@@ -21,16 +21,16 @@ afterAll(async () => {
 
 describe('create-users', () => {
   process.env.DATABASE_SECRET_NAME = 'test';
+  process.env.DATABASE_HOSTNAME = 'test';
 
   it('should create users', async () => {
-    const dynamoMock = mockClient(dynamo);
     const secretsMock = mockClient(secretsManager);
 
     secretsMock.on(GetSecretValueCommand).resolves({
       SecretString: JSON.stringify({
-        port: 5432,
+        // port: 5432,
         engine: 'sqlite',
-        dbClusterIdentifier: 'db.sqlite'
+        database: 'db.sqlite'
       })
     });
 

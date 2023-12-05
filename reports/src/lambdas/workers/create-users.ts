@@ -16,8 +16,6 @@ export const handler: DynamoDBStreamHandler = async (event, context) => {
       db = await dataSource.initialize();
     }
 
-    console.log('Event received', JSON.stringify(event, null, 2));
-
     const users = event.Records.map((record) => {
       return formatUserFromDynamoStream(record.dynamodb?.NewImage!);
     });
