@@ -24,7 +24,7 @@ const serverlessConfig: AWS = {
   functions: {
     createUsers: {
       handler: 'src/lambdas/workers/create-users.handler',
-      timeout: 6,
+      timeout: 60,
       environment: {
         DATABASE_SECRET_NAME:
           '${cf:infra-stream-sync-reports.databaseSecretName}',

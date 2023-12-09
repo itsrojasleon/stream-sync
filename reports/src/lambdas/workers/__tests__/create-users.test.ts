@@ -28,7 +28,6 @@ describe('create-users', () => {
 
     secretsMock.on(GetSecretValueCommand).resolves({
       SecretString: JSON.stringify({
-        // port: 5432,
         engine: 'sqlite',
         database: 'db.sqlite'
       })
