@@ -1,4 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBStreamsClient } from '@aws-sdk/client-dynamodb-streams';
 import { SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
@@ -11,3 +12,5 @@ export const dynamo = DynamoDBDocumentClient.from(oldDynamo, {
 });
 
 export const secretsManager = new SecretsManagerClient({});
+
+export const dynamoStreams = new DynamoDBStreamsClient({});

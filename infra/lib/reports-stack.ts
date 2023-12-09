@@ -3,6 +3,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as rds from 'aws-cdk-lib/aws-rds';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 
 export class ReportsStack extends cdk.Stack {
@@ -91,10 +92,20 @@ export class ReportsStack extends cdk.Stack {
       deletionProtection: false
     });
 
+    const testQueue = new sqs.Queue(this, 'testQueue', {
+      visibilityTimeout: cdk.Duration.minutes(1),
+      receiveMessageWaitTime: cdk.Duration.seconds(20),
+      retentionPeriod: cdk.Duration.days(14)
+    });
+
     this.policyStatements.push(
       new iam.PolicyStatement({
         actions: ['secretsmanager:GetSecretValue'],
         resources: [database.secret?.secretArn || '']
+      }),
+      new iam.PolicyStatement({
+        actions: ['sqs:*'],
+        resources: [testQueue.queueArn]
       })
     );
 
@@ -116,6 +127,10 @@ export class ReportsStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'lambdaSecurityGroupId', {
       value: lambdaSecurityGroup.securityGroupId
+    });
+
+    new cdk.CfnOutput(this, 'testQueueArn', {
+      value: testQueue.queueArn
     });
   }
 }

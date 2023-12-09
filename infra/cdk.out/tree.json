@@ -1138,6 +1138,32 @@
               "version": "2.97.1"
             }
           },
+          "testQueue": {
+            "id": "testQueue",
+            "path": "reportsStack/testQueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "reportsStack/testQueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "messageRetentionPeriod": 1209600,
+                    "receiveMessageWaitTimeSeconds": 20,
+                    "visibilityTimeout": 60
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.97.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.97.1"
+            }
+          },
           "databaseHostname": {
             "id": "databaseHostname",
             "path": "reportsStack/databaseHostname",
@@ -1178,6 +1204,14 @@
               "version": "2.97.1"
             }
           },
+          "testQueueArn": {
+            "id": "testQueueArn",
+            "path": "reportsStack/testQueueArn",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.97.1"
+            }
+          },
           "CDKMetadata": {
             "id": "CDKMetadata",
             "path": "reportsStack/CDKMetadata",
@@ -1203,6 +1237,14 @@
               "Output{\"Ref\":\"databaseSecretAttachment5618DFB3\"}": {
                 "id": "Output{\"Ref\":\"databaseSecretAttachment5618DFB3\"}",
                 "path": "reportsStack/Exports/Output{\"Ref\":\"databaseSecretAttachment5618DFB3\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.97.1"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"testQueue601B0FCD\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"testQueue601B0FCD\",\"Arn\"]}",
+                "path": "reportsStack/Exports/Output{\"Fn::GetAtt\":[\"testQueue601B0FCD\",\"Arn\"]}",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.97.1"
@@ -1625,6 +1667,18 @@
                               }
                             },
                             {
+                              "Action": "sqs:*",
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3"
+                                },
+                                {
+                                  "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+                                }
+                              ]
+                            },
+                            {
                               "Action": "dynamodb:BatchWriteItem",
                               "Effect": "Allow",
                               "Resource": {
@@ -1641,13 +1695,6 @@
                               "Effect": "Allow",
                               "Resource": {
                                 "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
-                              }
-                            },
-                            {
-                              "Action": "sqs:*",
-                              "Effect": "Allow",
-                              "Resource": {
-                                "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
                               }
                             }
                           ],

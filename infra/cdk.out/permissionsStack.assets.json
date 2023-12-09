@@ -1,17 +1,17 @@
 {
   "version": "34.0.0",
   "files": {
-    "a0d9515b5493307b20c6f2d0901df1a38ebad9419cf8995aa0d1926530baeae8": {
+    "7149f5c820431208a1ed3db1bf74f7c3d0548b836ddc19c1789cb19ea25d7db3": {
       "source": {
         "path": "permissionsStack.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "934646758481-us-east-1": {
-          "bucketName": "cdk-hnb659fds-assets-934646758481-us-east-1",
-          "objectKey": "a0d9515b5493307b20c6f2d0901df1a38ebad9419cf8995aa0d1926530baeae8.json",
+        "208929069511-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-208929069511-us-east-1",
+          "objectKey": "7149f5c820431208a1ed3db1bf74f7c3d0548b836ddc19c1789cb19ea25d7db3.json",
           "region": "us-east-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::934646758481:role/cdk-hnb659fds-file-publishing-role-934646758481-us-east-1"
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-file-publishing-role-208929069511-us-east-1"
         }
       }
     }

@@ -405,7 +405,7 @@
       "DefaultSecurityGroup"
      ]
     },
-    "Account": "934646758481"
+    "Account": "208929069511"
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -452,7 +452,7 @@
            "Fn::Join": [
             "",
             [
-             "arn:aws:ec2:us-east-1:934646758481:security-group/",
+             "arn:aws:ec2:us-east-1:208929069511:security-group/",
              {
               "Fn::GetAtt": [
                "vpcA2121C38",
@@ -477,7 +477,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": "cdk-hnb659fds-assets-934646758481-us-east-1",
+     "S3Bucket": "cdk-hnb659fds-assets-208929069511-us-east-1",
      "S3Key": "7f18a11296f35510ee16538afec983ed6312e12afbf81b777089a9f8e34e2474.zip"
     },
     "Timeout": 900,
@@ -817,10 +817,23 @@
     "aws:cdk:path": "reportsStack/database/instance2/Resource"
    }
   },
+  "testQueue601B0FCD": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600,
+    "ReceiveMessageWaitTimeSeconds": 20,
+    "VisibilityTimeout": 60
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/testQueue/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEVTftitzUlGxtMiXOpqnqf8dt6YcQ4mT7+cV5z8lCPj3I+R1c/Uxlp1mhU1ntCNRJMPRRoVrI6nBWYv1pDvFaxE5fgHAXUoPUgGOW2EC4h7TAER+xpfdWaSBtzUAWcUgLrcYRz1HchDegLV9yhVtTRYbQMWECsZKfakms9atEQ+KlsNdXmzf9Pt2hCk7TbetsOLeq/gUikzv0vhaFzb2seMLA6/NaaChlldjOZRtjyyZaXV1WC5fx8Q0QpOBxXQTPDkRnc5i4WU2Bnsx6XLeLzao/2BaR8QRGYS18S/ElGMjRyapz0Zzqwh5cjjRZzED43alrkaC3wSk2w3fZcizZ29+t2NmLzlgWvygSf5Vcm3bp74HOgWphbIby6O8v80c5X/DfOnqtZy4Y0iXKpIvfZmUL6XcCAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEpZt2RWlqSrY2GYmzaar633ET2k4IcbL9/Oy8l2TGH+749Eac3UQWh0mlct5sUMgDI+i9ATnjze4o2fJD79IlS606CYSNzzVgB45ZZjzCVuQVjPiIzZ0zUglURg9klvq8UnJc8ZikXXgRuKZDzuLSVYlGsES4gkjJTzVH0vpZg0b2VJnzsym7fp9uQHqr8LK2xh+Dqn+BRJcWnGtZZUrHG9ow8Pq8ZUrUvMlMdBliashE0BWzltmCxlcCRS4cLCvvyAGLNoeNq8U10JNJj413sVr0g6FItEOhJbTMBYqrhRYlWN5EF91UDFthS8CrixkIvzu064uEvnnwwU1I2pZl4Iy3kjASYOqxJMN/t1JrTqogrfTMgPR/SqXDS7x6PHo6SJsC+N7dnqb3fDqjD7d3Sk2s16hq4FmM36LKPbaMAgAA"
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -919,12 +932,31 @@
     ]
    }
   },
+  "testQueueArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "testQueue601B0FCD",
+     "Arn"
+    ]
+   }
+  },
   "ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA": {
    "Value": {
     "Ref": "databaseSecretAttachment5618DFB3"
    },
    "Export": {
     "Name": "infra-stream-sync-reports:ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
+   }
+  },
+  "ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3": {
+   "Value": {
+    "Fn::GetAtt": [
+     "testQueue601B0FCD",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "infra-stream-sync-reports:ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3"
    }
   }
  },

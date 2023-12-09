@@ -38,13 +38,41 @@ const serverlessConfig: AWS = {
             batchSize: 500,
             startingPosition: 'LATEST',
             functionResponseType: 'ReportBatchItemFailures',
-            maximumRetryAttempts: 10
+            maximumRetryAttempts: 10,
+            destinations: {
+              onFailure: '${cf:infra-stream-sync-reports.testQueueArn}'
+            }
           }
-        },
+        }
+      ]
+    },
+    reprocessFailedUsers: {
+      handler: 'src/lambdas/workers/reprocess-failed-users.handler',
+      events: [
         {
-          http: {
+          sqs: {
+            arn: '${cf:infra-stream-sync-reports.testQueueArn}',
+            batchSize: 100,
+            maximumBatchingWindow: 30,
+            functionResponseType: 'ReportBatchItemFailures',
+            enabled: false
+          }
+        }
+      ]
+    },
+    countUsers: {
+      handler: 'src/lambdas/publishers/count.handler',
+      timeout: 29,
+      environment: {
+        DATABASE_SECRET_NAME:
+          '${cf:infra-stream-sync-reports.databaseSecretName}',
+        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}'
+      },
+      events: [
+        {
+          httpApi: {
             method: 'get',
-            path: '/hello'
+            path: '/count'
           }
         }
       ]

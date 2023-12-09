@@ -1,4 +1,4 @@
-import { getDataSource } from '@/data-source';
+import { DatabaseManager } from '@/data-source';
 import { User } from '@/entity/user';
 import { formatUserFromDynamoStream } from '@/utils';
 import { DynamoDBStreamHandler } from 'aws-lambda';
@@ -10,11 +10,9 @@ export const handler: DynamoDBStreamHandler = async (event, context) => {
   try {
     context.callbackWaitsForEmptyEventLoop = false;
 
-    if (!db) {
-      console.log('Initializing DB');
-      const dataSource = await getDataSource();
-      db = await dataSource.initialize();
-    }
+    throw new Error('Something went wrong');
+
+    const db = await DatabaseManager.getInstance();
 
     const users = event.Records.map((record) => {
       return formatUserFromDynamoStream(record.dynamodb?.NewImage!);

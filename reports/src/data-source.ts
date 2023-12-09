@@ -20,26 +20,40 @@ const getCredentials = async () => {
   return JSON.parse(SecretString);
 };
 
-export const getDataSource = async () => {
-  if (!process.env.DATABASE_HOSTNAME) {
-    throw new Error('No database hostname found');
-  }
-  const { password, port, username, engine, database } = await getCredentials();
+export class DatabaseManager {
+  private static instance: DataSource;
 
-  return new DataSource({
-    type: engine,
-    host: process.env.DATABASE_HOSTNAME,
-    port,
-    username,
-    password,
-    // Note: Just for development.
-    ...(database && {
-      database
-    }),
-    synchronize: true,
-    logging: true,
-    entities: [User],
-    subscribers: [],
-    migrations: []
-  });
-};
+  // singleton pattern.
+  private constructor() {}
+
+  public static async getInstance(): Promise<DataSource> {
+    if (!process.env.DATABASE_HOSTNAME) {
+      throw new Error('No database hostname found');
+    }
+
+    if (!DatabaseManager.instance || !DatabaseManager.instance.isInitialized) {
+      const { password, port, username, engine, database } =
+        await getCredentials();
+
+      DatabaseManager.instance = new DataSource({
+        type: engine,
+        host: process.env.DATABASE_HOSTNAME,
+        port,
+        username,
+        password,
+        // Note: Just for development.
+        ...(database && {
+          database
+        }),
+        synchronize: true,
+        logging: true,
+        entities: [User],
+        subscribers: [],
+        migrations: []
+      });
+
+      await DatabaseManager.instance.initialize();
+    }
+    return DatabaseManager.instance;
+  }
+}

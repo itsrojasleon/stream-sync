@@ -135,6 +135,18 @@
          }
         },
         {
+         "Action": "sqs:*",
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::ImportValue": "infra-stream-sync-reports:ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3"
+          },
+          {
+           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+          }
+         ]
+        },
+        {
          "Action": "dynamodb:BatchWriteItem",
          "Effect": "Allow",
          "Resource": {
@@ -151,13 +163,6 @@
          "Effect": "Allow",
          "Resource": {
           "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
-         }
-        },
-        {
-         "Action": "sqs:*",
-         "Effect": "Allow",
-         "Resource": {
-          "Fn::ImportValue": "infra-stream-sync-users:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
          }
         }
        ],
