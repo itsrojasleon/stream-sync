@@ -653,6 +653,30 @@
     "aws:cdk:path": "reportsStack/databaseSecurityGroup/from reportsStacklambdaSecurityGroup3511532B:5432"
    }
   },
+  "databaseSecurityGroupfromreportsStackec2InstanceSecurityGroupB1DE37BA54321FCEA735": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow ec2 instance access to the database",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "databaseSecurityGroupC7B2A60C",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ec2InstanceSecurityGroup11D2F941",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/databaseSecurityGroup/from reportsStackec2InstanceSecurityGroupB1DE37BA:5432"
+   }
+  },
   "redisSecurityGroupF1670DA3": {
    "Type": "AWS::EC2::SecurityGroup",
    "Properties": {
@@ -713,6 +737,34 @@
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/lambdaSecurityGroup/Resource"
+   }
+  },
+  "ec2InstanceSecurityGroup11D2F941": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the ec2 instances",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow SSH access from the internet",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/ec2InstanceSecurityGroup/Resource"
    }
   },
   "databaseSubnetsFA8AAF25": {
@@ -899,6 +951,85 @@
     "aws:cdk:path": "reportsStack/redis"
    }
   },
+  "ec2InstanceInstanceRoleF1811974": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/ec2Instance"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/ec2Instance/InstanceRole/Resource"
+   }
+  },
+  "ec2InstanceInstanceProfileD91A9EF4": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "ec2InstanceInstanceRoleF1811974"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/ec2Instance/InstanceProfile"
+   }
+  },
+  "ec2InstanceF91CE75A": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "IamInstanceProfile": {
+     "Ref": "ec2InstanceInstanceProfileD91A9EF4"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmarm64gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t4g.micro",
+    "KeyName": "ec2-key-pair",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "ec2InstanceSecurityGroup11D2F941",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "reportsStack/ec2Instance"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "ec2InstanceInstanceRoleF1811974"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/ec2Instance/Resource"
+   }
+  },
   "testQueue601B0FCD": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
@@ -915,7 +1046,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SwU7DMAz9Fu5Z0HYBjlsHUyUEpZt2RWlqSrY2GYmzaar677jp2g6EONl+fnHeczLjD3d8eiNObiLz/aRUGa/XKOSeEfReg5zxenuQLPrQ2yRiiVVHgbD2mQZswTFLjUfYiKyEER+xuXNGKoHK6IHMEp+VSo4jHuOkDS8CV3TJSZzbKtYIlghXECm5VHMkrZ8VaGRPpTk9m6Lt9+kapLcKzytr/CGo+heIdWHBuYaVpnC8pgkDr88bpkTF69R0LkNMDJkIurqsYTan40uBIhMOotI7csA6m8PE5eIa6Mmkx3a7WC76g6GItUOhJTTMBYqrhBYFWF53LtpTXdgIWwBeLWYg/O40DErhUEmqoRv0U2PUNi4y6OIvcvXmwQfrIWkaloIz3krCiGaqsaTt/N1KrDmqnIzRnwCkz1YoHZ7t1ePBkyptcuA7d3uc3vPpjH7nzik1sV6jqoCnXfwGMniPQLkCAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEZZu4IjczJdAmI3E2TVX/O25C14EQJ9vPjv384om8uZLjCzj4kdp+jCpdyGZNoD4EQy8NqolsnndKzF/Ncz4XudN7IFyHwiB14OCtbCDcQFHhgA/Y1HurNJC25lQs8lBUWg0tbrO8Mw9ASx5ygGMXZYbQccEZxEy+oykx17caDYm7yh7ubdnle3eNKjhNx6WzYRdZ/QtkpnTovciMJzAK0/Tkt6KypZcNtz097v1WaKhls7Jp9Whzy5tFsoPX98qdfdUVt3Rb7rgAggI8zqvgeVOR5DgNWczOgb6Yebuk2WLWP4zBwNfHEl+DgRKdbNK23atkNuBKpDMBTwW/M63ACjxpxTGmRj85zrvENw0e/MlbPQUMUY3otK1YobfBdaJyma2HkAX7O8Uy7fWWF+PbQeKjLLWJ3/sYaBci3xwc1BinGrtF+e4v9+NrOZ7wSb97rUcuGNI1ylWyX2pISt7uAgAA"
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -1059,6 +1190,10 @@
   }
  },
  "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmarm64gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-arm64-gp2"
+  },
   "BootstrapVersion": {
    "Type": "AWS::SSM::Parameter::Value<String>",
    "Default": "/cdk-bootstrap/hnb659fds/version",

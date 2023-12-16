@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-deploy-role-208929069511-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-cfn-exec-role-208929069511-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/90309aa5fb5fe0f558f460b84e31eebc6a81f9c0f2686d5605624525d3cccb37.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/12e69540058d586bafa4bb894427c990f2e3712388c56fec0a7b38585b570816.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -228,6 +228,12 @@
             "data": "databaseSecurityGroupfromreportsStacklambdaSecurityGroup3511532B5432E3C2FBA2"
           }
         ],
+        "/reportsStack/databaseSecurityGroup/from reportsStackec2InstanceSecurityGroupB1DE37BA:5432": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "databaseSecurityGroupfromreportsStackec2InstanceSecurityGroupB1DE37BA54321FCEA735"
+          }
+        ],
         "/reportsStack/redisSecurityGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -244,6 +250,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdaSecurityGroup2DB5E13D"
+          }
+        ],
+        "/reportsStack/ec2InstanceSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ec2InstanceSecurityGroup11D2F941"
           }
         ],
         "/reportsStack/database/Subnets/Default": [
@@ -292,6 +304,30 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "redis"
+          }
+        ],
+        "/reportsStack/ec2Instance/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ec2InstanceInstanceRoleF1811974"
+          }
+        ],
+        "/reportsStack/ec2Instance/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ec2InstanceInstanceProfileD91A9EF4"
+          }
+        ],
+        "/reportsStack/ec2Instance/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ec2InstanceF91CE75A"
+          }
+        ],
+        "/reportsStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-arm64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmarm64gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
           }
         ],
         "/reportsStack/testQueue/Resource": [

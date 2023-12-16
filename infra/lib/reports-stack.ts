@@ -22,7 +22,6 @@ export class ReportsStack extends cdk.Stack {
           cidrMask: 24,
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS
         },
-        // TODO: For the bastion host.
         {
           name: 'public subnet',
           cidrMask: 24,
@@ -47,42 +46,41 @@ export class ReportsStack extends cdk.Stack {
       });
     });
 
-    const databaseSecurityGroup = new ec2.SecurityGroup(
+    const databaseSG = new ec2.SecurityGroup(this, 'databaseSecurityGroup', {
+      vpc,
+      description: 'Security group for the database'
+    });
+    const redisSG = new ec2.SecurityGroup(this, 'redisSecurityGroup', {
+      vpc,
+      description: 'Security group for the redis'
+    });
+    const lambdaSG = new ec2.SecurityGroup(this, 'lambdaSecurityGroup', {
+      vpc,
+      description: 'Security group for the lambda functions'
+    });
+    const ec2InstanceSG = new ec2.SecurityGroup(
       this,
-      'databaseSecurityGroup',
+      'ec2InstanceSecurityGroup',
       {
         vpc,
-        description: 'Security group for the database'
+        description: 'Security group for the ec2 instances'
       }
     );
 
-    const redisSecurityGroup = new ec2.SecurityGroup(
-      this,
-      'redisSecurityGroup',
-      {
-        vpc,
-        description: 'Security group for the redis'
-      }
-    );
-
-    const lambdaSecurityGroup = new ec2.SecurityGroup(
-      this,
-      'lambdaSecurityGroup',
-      {
-        vpc,
-        description: 'Security group for the lambda functions'
-      }
-    );
-
-    databaseSecurityGroup.connections.allowFrom(
-      lambdaSecurityGroup,
+    databaseSG.connections.allowFrom(
+      lambdaSG,
       ec2.Port.tcp(5432),
       'Allow lambda functions access to the database'
     );
-    redisSecurityGroup.connections.allowFrom(
-      lambdaSecurityGroup,
+    redisSG.connections.allowFrom(
+      lambdaSG,
       ec2.Port.tcp(6379),
       'Allow lambda functions access to the redis'
+    );
+    ec2InstanceSG.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(22),
+      'Allow SSH access from the internet'
     );
 
     const database = new rds.DatabaseCluster(this, 'database', {
@@ -98,7 +96,7 @@ export class ReportsStack extends cdk.Stack {
         })
       ],
       vpc,
-      securityGroups: [databaseSecurityGroup],
+      securityGroups: [databaseSG],
       vpcSubnets: {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS
       },
@@ -111,7 +109,7 @@ export class ReportsStack extends cdk.Stack {
       cacheNodeType: 'cache.t3.micro',
       engine: 'redis',
       numCacheNodes: 1,
-      vpcSecurityGroupIds: [redisSecurityGroup.securityGroupId],
+      vpcSecurityGroupIds: [redisSG.securityGroupId],
       cacheSubnetGroupName: new elasticache.CfnSubnetGroup(
         this,
         'redisSubnetGroup',
@@ -121,6 +119,30 @@ export class ReportsStack extends cdk.Stack {
         }
       ).ref
     });
+
+    const ec2Instance = new ec2.Instance(this, 'ec2Instance', {
+      vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PUBLIC
+      },
+      securityGroup: ec2InstanceSG,
+      instanceType: ec2.InstanceType.of(
+        ec2.InstanceClass.T4G,
+        ec2.InstanceSize.MICRO
+      ),
+      machineImage: new ec2.AmazonLinuxImage({
+        generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+        cpuType: ec2.AmazonLinuxCpuType.ARM_64
+      }),
+      // NOTE: I have created a key pair in the AWS console.
+      keyName: 'ec2-key-pair'
+    });
+
+    database.connections.allowFrom(
+      ec2Instance,
+      ec2.Port.tcp(5432),
+      'Allow ec2 instance access to the database'
+    );
 
     const testQueue = new sqs.Queue(this, 'testQueue', {
       visibilityTimeout: cdk.Duration.minutes(1),
@@ -156,7 +178,7 @@ export class ReportsStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'lambdaSecurityGroupId', {
-      value: lambdaSecurityGroup.securityGroupId
+      value: lambdaSG.securityGroupId
     });
 
     new cdk.CfnOutput(this, 'testQueueArn', {
