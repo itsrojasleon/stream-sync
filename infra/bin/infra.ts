@@ -23,6 +23,8 @@ const usersStack = new UsersStack(app, 'usersStack', {
   stackName: 'infra-stream-sync-users'
 });
 
+reportsStack.addDependency(usersStack);
+
 new PermissionsStack(app, 'permissionsStack', {
   env,
   usersPolicyStatements: usersStack.policyStatements,

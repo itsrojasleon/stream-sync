@@ -1,16 +1,11 @@
-import { DatabaseManager } from '@/data-source';
 import { User } from '@/entity/user';
+import { DatabaseManager } from '@/services/db';
 import { formatUserFromDynamoStream } from '@/utils';
 import { DynamoDBStreamHandler } from 'aws-lambda';
-import { DataSource } from 'typeorm';
-
-let db: DataSource | undefined;
 
 export const handler: DynamoDBStreamHandler = async (event, context) => {
   try {
     context.callbackWaitsForEmptyEventLoop = false;
-
-    throw new Error('Something went wrong');
 
     const db = await DatabaseManager.getInstance();
 

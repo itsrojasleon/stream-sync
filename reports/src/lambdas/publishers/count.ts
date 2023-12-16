@@ -1,5 +1,5 @@
-import { DatabaseManager } from '@/data-source';
 import { User } from '@/entity/user';
+import { DatabaseManager } from '@/services/db';
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 
 export const handler: APIGatewayProxyHandlerV2 = async (_, context) => {
@@ -12,13 +12,8 @@ export const handler: APIGatewayProxyHandlerV2 = async (_, context) => {
     statusCode: 200,
     body: JSON.stringify({
       message: 'Counted users',
-      data: {
-        count,
-        db: db.isInitialized
-      }
+      data: { count }
     }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    headers: { 'Content-Type': 'application/json' }
   };
 };

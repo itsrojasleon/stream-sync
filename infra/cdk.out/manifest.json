@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-deploy-role-208929069511-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-cfn-exec-role-208929069511-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/6bf91e9bc86707ecb0274b99e2f56930f47a724b6674f694d5722ab0003d0b98.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/90309aa5fb5fe0f558f460b84e31eebc6a81f9c0f2686d5605624525d3cccb37.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -32,6 +32,7 @@
         "stackName": "infra-stream-sync-reports"
       },
       "dependencies": [
+        "usersStack",
         "reportsStack.assets"
       ],
       "metadata": {
@@ -227,6 +228,18 @@
             "data": "databaseSecurityGroupfromreportsStacklambdaSecurityGroup3511532B5432E3C2FBA2"
           }
         ],
+        "/reportsStack/redisSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisSecurityGroupF1670DA3"
+          }
+        ],
+        "/reportsStack/redisSecurityGroup/from reportsStacklambdaSecurityGroup3511532B:6379": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisSecurityGroupfromreportsStacklambdaSecurityGroup3511532B637996C8E776"
+          }
+        ],
         "/reportsStack/lambdaSecurityGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -269,6 +282,18 @@
             "data": "databaseinstance200EF09AA"
           }
         ],
+        "/reportsStack/redisSubnetGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisSubnetGroup"
+          }
+        ],
+        "/reportsStack/redis": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redis"
+          }
+        ],
         "/reportsStack/testQueue/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -309,6 +334,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testQueueArn"
+          }
+        ],
+        "/reportsStack/redisHostname": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisHostname"
+          }
+        ],
+        "/reportsStack/redisPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisPort"
           }
         ],
         "/reportsStack/CDKMetadata/Default": [

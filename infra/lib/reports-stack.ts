@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as elasticache from 'aws-cdk-lib/aws-elasticache';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as rds from 'aws-cdk-lib/aws-rds';
@@ -55,6 +56,15 @@ export class ReportsStack extends cdk.Stack {
       }
     );
 
+    const redisSecurityGroup = new ec2.SecurityGroup(
+      this,
+      'redisSecurityGroup',
+      {
+        vpc,
+        description: 'Security group for the redis'
+      }
+    );
+
     const lambdaSecurityGroup = new ec2.SecurityGroup(
       this,
       'lambdaSecurityGroup',
@@ -68,6 +78,11 @@ export class ReportsStack extends cdk.Stack {
       lambdaSecurityGroup,
       ec2.Port.tcp(5432),
       'Allow lambda functions access to the database'
+    );
+    redisSecurityGroup.connections.allowFrom(
+      lambdaSecurityGroup,
+      ec2.Port.tcp(6379),
+      'Allow lambda functions access to the redis'
     );
 
     const database = new rds.DatabaseCluster(this, 'database', {
@@ -90,6 +105,21 @@ export class ReportsStack extends cdk.Stack {
       credentials: rds.Credentials.fromGeneratedSecret('postgres'),
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false
+    });
+
+    const redis = new elasticache.CfnCacheCluster(this, 'redis', {
+      cacheNodeType: 'cache.t3.micro',
+      engine: 'redis',
+      numCacheNodes: 1,
+      vpcSecurityGroupIds: [redisSecurityGroup.securityGroupId],
+      cacheSubnetGroupName: new elasticache.CfnSubnetGroup(
+        this,
+        'redisSubnetGroup',
+        {
+          description: 'Subnet group for redis',
+          subnetIds: vpc.privateSubnets.map((subnet) => subnet.subnetId)
+        }
+      ).ref
     });
 
     const testQueue = new sqs.Queue(this, 'testQueue', {
@@ -131,6 +161,14 @@ export class ReportsStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'testQueueArn', {
       value: testQueue.queueArn
+    });
+
+    new cdk.CfnOutput(this, 'redisHostname', {
+      value: redis.attrRedisEndpointAddress
+    });
+
+    new cdk.CfnOutput(this, 'redisPort', {
+      value: redis.attrRedisEndpointPort
     });
   }
 }

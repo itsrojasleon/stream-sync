@@ -76,6 +76,25 @@ const serverlessConfig: AWS = {
           }
         }
       ]
+    },
+    getOneUser: {
+      handler: 'src/lambdas/publishers/get-one.handler',
+      timeout: 8,
+      environment: {
+        DATABASE_SECRET_NAME:
+          '${cf:infra-stream-sync-reports.databaseSecretName}',
+        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}',
+        REDIS_HOSTNAME: '${cf:infra-stream-sync-reports.redisHostname}',
+        REDIS_PORT: '${cf:infra-stream-sync-reports.redisPort}'
+      },
+      events: [
+        {
+          httpApi: {
+            method: 'get',
+            path: '/users/{id}'
+          }
+        }
+      ]
     }
   },
   plugins: ['serverless-esbuild'],

@@ -1,3 +1,6 @@
+// TODO: Continue with the implementation.
+// For now I don't need to implement this lambda function.
+
 import { dynamoStreams } from '@/clients';
 import {
   GetRecordsCommand,
@@ -45,17 +48,18 @@ export const handler: SQSHandler = async (event) => {
           );
 
           if (Records?.length) {
-            for (const record of Records) {
-              if (record.dynamodb?.SequenceNumber) {
-                if (record.dynamodb?.SequenceNumber > data.endSequenceNumber) {
-                  continueReading = false;
-                  break;
-                }
-              }
+            Records.map(async (record) => {});
+            // for (const record of Records) {
+            //   if (record.dynamodb?.SequenceNumber) {
+            //     if (record.dynamodb?.SequenceNumber > data.endSequenceNumber) {
+            //       continueReading = false;
+            //       break;
+            //     }
+            //   }
 
-              console.log('Processing record:', record);
-              // await trackProcessedRecord(record);
-            }
+            //   console.log('Processing record:', record);
+            //   // await trackProcessedRecord(record);
+            // }
           } else {
             console.log(
               'No new records to process. Waiting for new records...'

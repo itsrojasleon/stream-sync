@@ -1,7 +1,7 @@
 import { secretsManager } from '@/clients';
+import { User } from '@/entity/user';
 import { GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { DataSource } from 'typeorm';
-import { User } from './entity/user';
 
 const getCredentials = async () => {
   if (!process.env.DATABASE_SECRET_NAME) {
@@ -41,7 +41,7 @@ export class DatabaseManager {
         port,
         username,
         password,
-        // Note: Just for development.
+        // NOTE: Just specify db name in development.
         ...(database && {
           database
         }),

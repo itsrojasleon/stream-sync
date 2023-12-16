@@ -653,6 +653,49 @@
     "aws:cdk:path": "reportsStack/databaseSecurityGroup/from reportsStacklambdaSecurityGroup3511532B:5432"
    }
   },
+  "redisSecurityGroupF1670DA3": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the redis",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/redisSecurityGroup/Resource"
+   }
+  },
+  "redisSecurityGroupfromreportsStacklambdaSecurityGroup3511532B637996C8E776": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow lambda functions access to the redis",
+    "FromPort": 6379,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "redisSecurityGroupF1670DA3",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "lambdaSecurityGroup2DB5E13D",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/redisSecurityGroup/from reportsStacklambdaSecurityGroup3511532B:6379"
+   }
+  },
   "lambdaSecurityGroup2DB5E13D": {
    "Type": "AWS::EC2::SecurityGroup",
    "Properties": {
@@ -817,6 +860,45 @@
     "aws:cdk:path": "reportsStack/database/instance2/Resource"
    }
   },
+  "redisSubnetGroup": {
+   "Type": "AWS::ElastiCache::SubnetGroup",
+   "Properties": {
+    "Description": "Subnet group for redis",
+    "SubnetIds": [
+     {
+      "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+     },
+     {
+      "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/redisSubnetGroup"
+   }
+  },
+  "redis": {
+   "Type": "AWS::ElastiCache::CacheCluster",
+   "Properties": {
+    "CacheNodeType": "cache.t3.micro",
+    "CacheSubnetGroupName": {
+     "Ref": "redisSubnetGroup"
+    },
+    "Engine": "redis",
+    "NumCacheNodes": 1,
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "redisSecurityGroupF1670DA3",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "reportsStack/redis"
+   }
+  },
   "testQueue601B0FCD": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
@@ -833,7 +915,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEpZt2RWlqSrY2GYmzaar633ET2k4IcbL9/Oy8l2TGH+749Eac3UQWh0mlct5sUMgDI+i9ATnjze4o2fJD79IlS606CYSNzzVgB45ZZjzCVuQVjPiIzZ0zUglURg9klvq8UnJc8ZikXXgRuKZDzuLSVYlGsES4gkjJTzVH0vpZg0b2VJnzsym7fp9uQHqr8LK2xh+Dqn+BRJcWnGtZZUrHG9ow8Pq8ZUrUvMlMdBliashE0BWzltmCxlcCRS4cLCvvyAGLNoeNq8U10JNJj413sVr0g6FItEOhJbTMBYqrhRYlWN5EF91UDFthS8CrixkIvzu064uEvnnwwU1I2pZl4Iy3kjASYOqxJMN/t1JrTqogrfTMgPR/SqXDS7x6PHo6SJsC+N7dnqb3fDqjD7d3Sk2s16hq4FmM36LKPbaMAgAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SwU7DMAz9Fu5Z0HYBjlsHUyUEpZt2RWlqSrY2GYmzaar677jp2g6EONl+fnHeczLjD3d8eiNObiLz/aRUGa/XKOSeEfReg5zxenuQLPrQ2yRiiVVHgbD2mQZswTFLjUfYiKyEER+xuXNGKoHK6IHMEp+VSo4jHuOkDS8CV3TJSZzbKtYIlghXECm5VHMkrZ8VaGRPpTk9m6Lt9+kapLcKzytr/CGo+heIdWHBuYaVpnC8pgkDr88bpkTF69R0LkNMDJkIurqsYTan40uBIhMOotI7csA6m8PE5eIa6Mmkx3a7WC76g6GItUOhJTTMBYqrhBYFWF53LtpTXdgIWwBeLWYg/O40DErhUEmqoRv0U2PUNi4y6OIvcvXmwQfrIWkaloIz3krCiGaqsaTt/N1KrDmqnIzRnwCkz1YoHZ7t1ePBkyptcuA7d3uc3vPpjH7nzik1sV6jqoCnXfwGMniPQLkCAAA="
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -937,6 +1019,22 @@
     "Fn::GetAtt": [
      "testQueue601B0FCD",
      "Arn"
+    ]
+   }
+  },
+  "redisHostname": {
+   "Value": {
+    "Fn::GetAtt": [
+     "redis",
+     "RedisEndpoint.Address"
+    ]
+   }
+  },
+  "redisPort": {
+   "Value": {
+    "Fn::GetAtt": [
+     "redis",
+     "RedisEndpoint.Port"
     ]
    }
   },

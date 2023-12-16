@@ -881,6 +881,69 @@
               "version": "2.97.1"
             }
           },
+          "redisSecurityGroup": {
+            "id": "redisSecurityGroup",
+            "path": "reportsStack/redisSecurityGroup",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "reportsStack/redisSecurityGroup/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "Security group for the redis",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "vpcA2121C38"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.97.1"
+                }
+              },
+              "from reportsStacklambdaSecurityGroup3511532B:6379": {
+                "id": "from reportsStacklambdaSecurityGroup3511532B:6379",
+                "path": "reportsStack/redisSecurityGroup/from reportsStacklambdaSecurityGroup3511532B:6379",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Allow lambda functions access to the redis",
+                    "fromPort": 6379,
+                    "groupId": {
+                      "Fn::GetAtt": [
+                        "redisSecurityGroupF1670DA3",
+                        "GroupId"
+                      ]
+                    },
+                    "ipProtocol": "tcp",
+                    "sourceSecurityGroupId": {
+                      "Fn::GetAtt": [
+                        "lambdaSecurityGroup2DB5E13D",
+                        "GroupId"
+                      ]
+                    },
+                    "toPort": 6379
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                  "version": "2.97.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.97.1"
+            }
+          },
           "lambdaSecurityGroup": {
             "id": "lambdaSecurityGroup",
             "path": "reportsStack/lambdaSecurityGroup",
@@ -1138,6 +1201,55 @@
               "version": "2.97.1"
             }
           },
+          "redisSubnetGroup": {
+            "id": "redisSubnetGroup",
+            "path": "reportsStack/redisSubnetGroup",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::ElastiCache::SubnetGroup",
+              "aws:cdk:cloudformation:props": {
+                "description": "Subnet group for redis",
+                "subnetIds": [
+                  {
+                    "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+                  },
+                  {
+                    "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+                  }
+                ]
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticache.CfnSubnetGroup",
+              "version": "2.97.1"
+            }
+          },
+          "redis": {
+            "id": "redis",
+            "path": "reportsStack/redis",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::ElastiCache::CacheCluster",
+              "aws:cdk:cloudformation:props": {
+                "cacheNodeType": "cache.t3.micro",
+                "cacheSubnetGroupName": {
+                  "Ref": "redisSubnetGroup"
+                },
+                "engine": "redis",
+                "numCacheNodes": 1,
+                "vpcSecurityGroupIds": [
+                  {
+                    "Fn::GetAtt": [
+                      "redisSecurityGroupF1670DA3",
+                      "GroupId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticache.CfnCacheCluster",
+              "version": "2.97.1"
+            }
+          },
           "testQueue": {
             "id": "testQueue",
             "path": "reportsStack/testQueue",
@@ -1207,6 +1319,22 @@
           "testQueueArn": {
             "id": "testQueueArn",
             "path": "reportsStack/testQueueArn",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.97.1"
+            }
+          },
+          "redisHostname": {
+            "id": "redisHostname",
+            "path": "reportsStack/redisHostname",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.97.1"
+            }
+          },
+          "redisPort": {
+            "id": "redisPort",
+            "path": "reportsStack/redisPort",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnOutput",
               "version": "2.97.1"
