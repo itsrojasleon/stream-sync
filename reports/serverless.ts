@@ -84,8 +84,7 @@ const serverlessConfig: AWS = {
         DATABASE_SECRET_NAME:
           '${cf:infra-stream-sync-reports.databaseSecretName}',
         DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}',
-        REDIS_HOSTNAME: '${cf:infra-stream-sync-reports.redisHostname}',
-        REDIS_PORT: '${cf:infra-stream-sync-reports.redisPort}'
+        REDIS_HOSTNAME: '${cf:infra-stream-sync-reports.redisHostname}'
       },
       events: [
         {

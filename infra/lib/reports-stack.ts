@@ -104,20 +104,12 @@ export class ReportsStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false
     });
-
-    const redis = new elasticache.CfnCacheCluster(this, 'redis', {
-      cacheNodeType: 'cache.t3.micro',
+    const redis = new elasticache.CfnServerlessCache(this, 'redis', {
       engine: 'redis',
-      numCacheNodes: 1,
-      vpcSecurityGroupIds: [redisSG.securityGroupId],
-      cacheSubnetGroupName: new elasticache.CfnSubnetGroup(
-        this,
-        'redisSubnetGroup',
-        {
-          description: 'Subnet group for redis',
-          subnetIds: vpc.privateSubnets.map((subnet) => subnet.subnetId)
-        }
-      ).ref
+      serverlessCacheName: 'stream-sync-redis',
+      description: 'Redis serverless cluster',
+      securityGroupIds: [redisSG.securityGroupId],
+      subnetIds: vpc.privateSubnets.map((subnet) => subnet.subnetId)
     });
 
     const ec2Instance = new ec2.Instance(this, 'ec2Instance', {
@@ -186,11 +178,7 @@ export class ReportsStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'redisHostname', {
-      value: redis.attrRedisEndpointAddress
-    });
-
-    new cdk.CfnOutput(this, 'redisPort', {
-      value: redis.attrRedisEndpointPort
+      value: redis.attrEndpoint.toString()
     });
   }
 }

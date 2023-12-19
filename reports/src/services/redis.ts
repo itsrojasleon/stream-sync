@@ -9,9 +9,6 @@ export class RedisManager {
     if (!process.env.REDIS_HOSTNAME) {
       throw new Error('No Redis hostname found');
     }
-    if (!process.env.REDIS_PORT) {
-      throw new Error('No Redis port found');
-    }
 
     if (!RedisManager.instance) {
       console.log('Creating new Redis instance');
@@ -20,8 +17,7 @@ export class RedisManager {
       // the provided configuration. You don't need to call any additional
       // methods to initiate this connection.
       RedisManager.instance = new Redis({
-        host: process.env.REDIS_HOSTNAME,
-        port: parseInt(process.env.REDIS_PORT)
+        host: process.env.REDIS_HOSTNAME
       });
 
       RedisManager.instance.on('error', (err) => {
