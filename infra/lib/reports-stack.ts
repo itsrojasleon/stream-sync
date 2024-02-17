@@ -178,7 +178,7 @@ export class ReportsStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'redisHostname', {
-      value: redis.attrEndpoint.toString()
+      value: redis.attrEndpointAddress
     });
   }
 }
