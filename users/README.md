@@ -1,19 +1,25 @@
-# stream sync users
+# Users
 
 To install dependencies:
 
 ```bash
-pnpm install
+bun install
+```
+
+## Testing
+
+```shell
+bun run test
 ```
 
 ## Deployment
 
 ```shell
-pnpm run deploy
+bun run deploy
 ```
 
 ## Destroy
 
 ```shell
-pnpm run destroy
+bun run destroy
 ```
