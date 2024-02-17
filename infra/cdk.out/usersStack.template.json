@@ -56,7 +56,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zXNyw7CIBCF4WdxD2Poprr2AYzVvaEwJvQCtsPUGMK7ixhX58+3OQ0cW1A7/SJp7Cgn10O6Rm1GUeie7NvrOdiCN91PKE4PXyMLWgjShZEr1shZdEiBV1PtzPHJ8Vt/zcIHizDQflMHUE05Hsg5ubKPbkbofvsBiaikrpQAAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zXIWwrCMBBA0bX0PxmTgitwAWL1v+QxQvpItJOxSMjexYhf93B70PoIqjM7SednuQQL5ZqNm4XZaSz+Hc2avIVyM3ZBcbrHhiroSVAujNxmQ61iQEq8ufbOnB+cv/rfKmLyCBMdXr0CrUB1E4UgN445rAjDrx8/AuPylQAAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "usersStack/CDKMetadata/Default"

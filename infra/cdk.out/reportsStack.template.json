@@ -478,7 +478,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-208929069511-us-east-1",
-     "S3Key": "7f18a11296f35510ee16538afec983ed6312e12afbf81b777089a9f8e34e2474.zip"
+     "S3Key": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -497,7 +497,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "reportsStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
-    "aws:asset:path": "asset.7f18a11296f35510ee16538afec983ed6312e12afbf81b777089a9f8e34e2474",
+    "aws:asset:path": "asset.dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e",
     "aws:asset:property": "Code"
    }
   },
@@ -912,38 +912,26 @@
     "aws:cdk:path": "reportsStack/database/instance2/Resource"
    }
   },
-  "redisSubnetGroup": {
-   "Type": "AWS::ElastiCache::SubnetGroup",
+  "redis": {
+   "Type": "AWS::ElastiCache::ServerlessCache",
    "Properties": {
-    "Description": "Subnet group for redis",
+    "Description": "Redis serverless cluster",
+    "Engine": "redis",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "redisSecurityGroupF1670DA3",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServerlessCacheName": "stream-sync-redis",
     "SubnetIds": [
      {
       "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
      },
      {
       "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
-     }
-    ]
-   },
-   "Metadata": {
-    "aws:cdk:path": "reportsStack/redisSubnetGroup"
-   }
-  },
-  "redis": {
-   "Type": "AWS::ElastiCache::CacheCluster",
-   "Properties": {
-    "CacheNodeType": "cache.t3.micro",
-    "CacheSubnetGroupName": {
-     "Ref": "redisSubnetGroup"
-    },
-    "Engine": "redis",
-    "NumCacheNodes": 1,
-    "VpcSecurityGroupIds": [
-     {
-      "Fn::GetAtt": [
-       "redisSecurityGroupF1670DA3",
-       "GroupId"
-      ]
      }
     ]
    },
@@ -1046,7 +1034,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdyzoO0CHPcBUyUEZZu4IjczJdAmI3E2TVX/O25C14EQJ9vPjv384om8uZLjCzj4kdp+jCpdyGZNoD4EQy8NqolsnndKzF/Ncz4XudN7IFyHwiB14OCtbCDcQFHhgA/Y1HurNJC25lQs8lBUWg0tbrO8Mw9ASx5ygGMXZYbQccEZxEy+oykx17caDYm7yh7ubdnle3eNKjhNx6WzYRdZ/QtkpnTovciMJzAK0/Tkt6KypZcNtz097v1WaKhls7Jp9Whzy5tFsoPX98qdfdUVt3Rb7rgAggI8zqvgeVOR5DgNWczOgb6Yebuk2WLWP4zBwNfHEl+DgRKdbNK23atkNuBKpDMBTwW/M63ACjxpxTGmRj85zrvENw0e/MlbPQUMUY3otK1YobfBdaJyma2HkAX7O8Uy7fWWF+PbQeKjLLWJ3/sYaBci3xwc1BinGrtF+e4v9+NrOZ7wSb97rUcuGNI1ylWyX2pISt7uAgAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31R0W7bMAz8lr4rWhKgH5A6axCgaLW4yOtAK4yrVpZSkkpQGP73wfIcBwW2Jx6PR+pILfVica/nd3DhmT18zLyrdFsK2A8FF/7dol3qdn+yqjiGvSmUIXcGwTJVAaUnJ7SLSfAVKo8TP3Er5mgdiIvhKlYmVd7ZacTPrenDM8gGBC/w1WfbIEgBb6m9Kf5mKxGwbw0GUY8+Xp5i3ddHWKJN5ORrQzGdsqv/EttQEzKrbWCBYHF4fcCd8rFm3T7F+to84k45aHS7i8PqOZronc1mJzTOMhSPzmOn6MC6XYNABYyFTyxIajjH9ZH1wy0xiku0NNxs/TA25mTyy1nCDQSokXQ7bNt3DeEVqEa5OeBV8L3SKfTA4izYN9RZRmckj8xFTyn+ZN3+Spjy/hl0ndohx0T9GRNLbKb0GP5RMhTP7oCkVswopUDtQv7QlySnlB0aIGhQkDoV4gH1O/84L+d6Mdfzu3d2bkYpiGtQ74b4B0RFmkrhAgAA"
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -1157,15 +1145,7 @@
    "Value": {
     "Fn::GetAtt": [
      "redis",
-     "RedisEndpoint.Address"
-    ]
-   }
-  },
-  "redisPort": {
-   "Value": {
-    "Fn::GetAtt": [
-     "redis",
-     "RedisEndpoint.Port"
+     "Endpoint"
     ]
    }
   },
