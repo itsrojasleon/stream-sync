@@ -1,5 +1,5 @@
 import { secretsManager } from '@/clients';
-import { User } from '@/entity/user';
+import { createDataSource } from '@/utils/db';
 import { GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { DataSource } from 'typeorm';
 
@@ -35,7 +35,7 @@ export class DatabaseManager {
       const { password, port, username, engine, database } =
         await getCredentials();
 
-      DatabaseManager.instance = new DataSource({
+      DatabaseManager.instance = createDataSource({
         type: engine,
         host: process.env.DATABASE_HOSTNAME,
         port,
@@ -44,12 +44,7 @@ export class DatabaseManager {
         // NOTE: Just specify db name in development.
         ...(database && {
           database
-        }),
-        synchronize: true,
-        logging: true,
-        entities: [User],
-        subscribers: [],
-        migrations: []
+        })
       });
 
       await DatabaseManager.instance.initialize();

@@ -28,7 +28,7 @@ export const handler: DynamoDBStreamHandler = async (event, context) => {
     console.log('Something went wrong inserting a bunch of users', err);
     return {
       batchItemFailures: event.Records.map((r) => ({
-        // TODO: Why eventID would be undefined?
+        // TODO: Why eventID can be undefined?
         itemIdentifier: r.eventID!
       }))
     };

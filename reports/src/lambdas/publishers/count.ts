@@ -12,7 +12,9 @@ export const handler: APIGatewayProxyHandlerV2 = async (_, context) => {
     statusCode: 200,
     body: JSON.stringify({
       message: 'Counted users',
-      data: { count }
+      data: {
+        count
+      }
     }),
     headers: { 'Content-Type': 'application/json' }
   };

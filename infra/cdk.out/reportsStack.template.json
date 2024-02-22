@@ -1034,7 +1034,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31R0W7bMAz8lr4rWhKgH5A6axCgaLW4yOtAK4yrVpZSkkpQGP73wfIcBwW2Jx6PR+pILfVica/nd3DhmT18zLyrdFsK2A8FF/7dol3qdn+yqjiGvSmUIXcGwTJVAaUnJ7SLSfAVKo8TP3Er5mgdiIvhKlYmVd7ZacTPrenDM8gGBC/w1WfbIEgBb6m9Kf5mKxGwbw0GUY8+Xp5i3ddHWKJN5ORrQzGdsqv/EttQEzKrbWCBYHF4fcCd8rFm3T7F+to84k45aHS7i8PqOZronc1mJzTOMhSPzmOn6MC6XYNABYyFTyxIajjH9ZH1wy0xiku0NNxs/TA25mTyy1nCDQSokXQ7bNt3DeEVqEa5OeBV8L3SKfTA4izYN9RZRmckj8xFTyn+ZN3+Spjy/hl0ndohx0T9GRNLbKb0GP5RMhTP7oCkVswopUDtQv7QlySnlB0aIGhQkDoV4gH1O/84L+d6Mdfzu3d2bkYpiGtQ74b4B0RFmkrhAgAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31RwW7bMAz9lt4VLc2p18TZggBFq8VFrgOtMK5aWUpJKkFh+N8Hy3McDGhPfHx8pB6phb5fPOj5HVx4Zg/vM+8q3ZYC9l3Bhf+0aBe63Z+sKo5hbwplyJ1BsExVQOnJCe1iEnyByuPET9ySOVoH4mK4ipVJlXd2GvFza/rwBLIBwQt89tk2CFLAW2pvin/ZUgTsa4NB1C8fL4+x7usjLNEmcvK5oZhO2dW3xDbUhMxqG1ggWBxeH3CnfKxZt4+xvjaPuFMOGt3u4rB6jiZ6Z7PZCY2zDMWj89gpOrBu1yBQAWPhEwuSGs5xfWS9uiVGcYmWhputV2NjTia/nCXcQIAaSbfDtn3XEF6AapSbA14F/1c6hR5YnAX7ijrL6IzkkbnoKcUfrNvfCVPeP4OuUzvkmKg/Y2KJzZQewxclQ/HsDkgrYFRLZpRSoHYhf+pzklPKLg0QNChInQrxgPqNf5wXc30/1/O7N3ZuRimIa1DvhvgXXBKxcuUCAAA="
    },
    "Metadata": {
     "aws:cdk:path": "reportsStack/CDKMetadata/Default"
@@ -1145,7 +1145,7 @@
    "Value": {
     "Fn::GetAtt": [
      "redis",
-     "Endpoint"
+     "Endpoint.Address"
     ]
    }
   },

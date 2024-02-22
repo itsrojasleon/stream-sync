@@ -16,4 +16,8 @@ export class User {
 
   @Column('varchar')
   company!: string;
+
+  // @Column('varchar')
+  // @Index('country_idx') // B-tree index
+  // country!: string;
 }

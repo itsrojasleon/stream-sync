@@ -17,3 +17,9 @@ bun run deploy
 ```shell
 bun run destroy
 ```
+
+## SSH Tunnel
+
+```shell
+ssh -i ~/downloads/ec2-key-pair.pem -L dbport:dbname.us-east-1.rds.amazonaws.com:5432 ec2-user@publicIp -N
+```

@@ -1,5 +1,5 @@
 {
-  "version": "35.0.0",
+  "version": "36.0.0",
   "artifacts": {
     "reportsStack.assets": {
       "type": "cdk:asset-manifest",
@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-deploy-role-208929069511-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-cfn-exec-role-208929069511-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/5c3795d77500c418ed9d9a81e23489ae614c7e53caedf0f76902de96e59c2105.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/abce8db9dce3f1e1eee90ee465def1588139d4b34090bf921ab9d00492c7343a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -422,7 +422,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-deploy-role-208929069511-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-cfn-exec-role-208929069511-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/cdd71937bf157eb0d7c10250be58e70cfd7549d4485a12aee2602c2a358047af.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/c3e7084104455e337978e3bdafd41df516ab0b8b59c1943e11cb810863a242ba.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -537,7 +537,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-deploy-role-208929069511-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::208929069511:role/cdk-hnb659fds-cfn-exec-role-208929069511-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/ac4735462da0231c08e87703235331a55a91b44eb16c730a5b35aca6c0e9933d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-208929069511-us-east-1/db716ce9e2a7db3bb2699137a7dc1b74dd68b4ec0ecfbd270a57cad8e50e15f7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [

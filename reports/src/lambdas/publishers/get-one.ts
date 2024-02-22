@@ -6,7 +6,6 @@ import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
-  // TODO: Handle the case where id could be undefined.
   const id = parseInt(event.pathParameters?.id || '');
 
   const cachedUser = await getCachedUser(id);

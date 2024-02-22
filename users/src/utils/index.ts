@@ -28,6 +28,7 @@ export const generateUserStream = (totalUsers: number) => {
         email: chance.email(),
         age: chance.age(),
         company: chance.company()
+        // country: chance.country()
       };
 
       usersCount++;
