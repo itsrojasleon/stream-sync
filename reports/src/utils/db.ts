@@ -6,7 +6,6 @@ export const createDataSource = (opts: DataSourceOptions) => {
     ...opts,
     logging: true,
     synchronize: false,
-    entities: [User],
-    migrations: [__dirname + '../migrations/*.{ts}']
+    entities: [User]
   });
 };

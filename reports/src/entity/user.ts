@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -17,7 +17,7 @@ export class User {
   @Column('varchar')
   company!: string;
 
-  // @Column('varchar')
-  // @Index('country_idx') // B-tree index
-  // country!: string;
+  @Column('varchar', { default: null })
+  @Index('country_idx') // B-tree index
+  country!: string;
 }
