@@ -8,7 +8,8 @@ export const formatUserFromDynamoStream = (
     name: r.name?.S || '',
     email: r.email?.S || '',
     age: parseInt(r.age?.N || '0', 10),
-    company: r.company?.S || ''
+    company: r.company?.S || '',
+    country: r.country?.S || ''
   };
 };
 

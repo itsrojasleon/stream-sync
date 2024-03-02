@@ -23,7 +23,6 @@ const getCredentials = async () => {
 export class DatabaseManager {
   private static instance: DataSource;
 
-  // singleton pattern.
   private constructor() {}
 
   public static async getInstance(): Promise<DataSource> {
@@ -31,7 +30,7 @@ export class DatabaseManager {
       throw new Error('No database hostname found');
     }
 
-    if (!DatabaseManager.instance || !DatabaseManager.instance.isInitialized) {
+    if (!DatabaseManager.instance?.isInitialized) {
       const { password, port, username, engine, database } =
         await getCredentials();
 
