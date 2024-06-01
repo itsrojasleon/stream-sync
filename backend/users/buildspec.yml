@@ -1,0 +1,14 @@
+version: '0.2'
+phases:
+  install:
+    runtime-versions:
+      nodejs: '20.x'
+    commands:
+      - curl -fsSL https://bun.sh/install | bash
+      - export PATH=$HOME/.bun/bin:$PATH
+      - bun --version
+      - bun install
+      - ls -al
+  build:
+    commands:
+      - bun run deploy -- --stage $STAGE

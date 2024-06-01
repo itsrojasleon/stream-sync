@@ -373,21 +373,16 @@
                       ]
                     },
                     "environment": {
-                      "type": "LINUX_CONTAINER",
-                      "image": "aws/codebuild/amazonlinux2-x86_64-standard:5.0",
+                      "type": "ARM_CONTAINER",
+                      "image": "aws/codebuild/amazonlinux2-aarch64-standard:3.0",
                       "imagePullCredentialsType": "CODEBUILD",
                       "privilegedMode": false,
-                      "computeType": "BUILD_GENERAL1_SMALL",
+                      "computeType": "BUILD_GENERAL1_LARGE",
                       "environmentVariables": [
                         {
                           "name": "STAGE",
                           "type": "PLAINTEXT",
-                          "value": "[object Object]"
-                        },
-                        {
-                          "name": "SERVICE_PATH",
-                          "type": "PLAINTEXT",
-                          "value": "users"
+                          "value": "test"
                         }
                       ]
                     },
@@ -399,7 +394,7 @@
                     },
                     "source": {
                       "type": "CODEPIPELINE",
-                      "buildSpec": "backend/depl/buildspec.yml"
+                      "buildSpec": "backend/users/buildspec.yml"
                     }
                   }
                 },
@@ -615,21 +610,16 @@
                       ]
                     },
                     "environment": {
-                      "type": "LINUX_CONTAINER",
-                      "image": "aws/codebuild/amazonlinux2-x86_64-standard:5.0",
+                      "type": "ARM_CONTAINER",
+                      "image": "aws/codebuild/amazonlinux2-aarch64-standard:3.0",
                       "imagePullCredentialsType": "CODEBUILD",
                       "privilegedMode": false,
-                      "computeType": "BUILD_GENERAL1_SMALL",
+                      "computeType": "BUILD_GENERAL1_LARGE",
                       "environmentVariables": [
                         {
                           "name": "STAGE",
                           "type": "PLAINTEXT",
-                          "value": "[object Object]"
-                        },
-                        {
-                          "name": "SERVICE_PATH",
-                          "type": "PLAINTEXT",
-                          "value": "reports"
+                          "value": "test"
                         }
                       ]
                     },
@@ -641,7 +631,7 @@
                     },
                     "source": {
                       "type": "CODEPIPELINE",
-                      "buildSpec": "backend/depl/buildspec.yml"
+                      "buildSpec": "backend/reports/buildspec.yml"
                     }
                   }
                 },

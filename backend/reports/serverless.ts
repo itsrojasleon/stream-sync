@@ -6,18 +6,18 @@ const serverlessConfig: AWS = {
   provider: {
     name: 'aws',
     stage: '${opt:stage, "test"}',
-    runtime: 'nodejs18.x',
+    runtime: 'nodejs20.x',
     architecture: 'arm64',
     iam: {
-      role: '${cf:infra-stream-sync-permissions.reportsRoleArn}'
+      role: '${cf:permissionsStack-${self:provider.stage}.reportsRoleArn}'
     },
     vpc: {
       securityGroupIds: [
-        '${cf:infra-stream-sync-reports.lambdaSecurityGroupId}'
+        '${cf:reportsStack-${self:provider.stage}.lambdaSecurityGroupId}'
       ],
       subnetIds: [
-        '${cf:infra-stream-sync-reports.privateSubnet1Id}',
-        '${cf:infra-stream-sync-reports.privateSubnet2Id}'
+        '${cf:reportsStack-${self:provider.stage}.privateSubnet1Id}',
+        '${cf:reportsStack-${self:provider.stage}.privateSubnet2Id}'
       ]
     }
   },
@@ -27,20 +27,22 @@ const serverlessConfig: AWS = {
       timeout: 60,
       environment: {
         DATABASE_SECRET_NAME:
-          '${cf:infra-stream-sync-reports.databaseSecretName}',
-        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}'
+          '${cf:reportsStack-${self:provider.stage}.databaseSecretName}',
+        DATABASE_HOSTNAME:
+          '${cf:reportsStack-${self:provider.stage}.databaseHostname}'
       },
       events: [
         {
           stream: {
             type: 'dynamodb',
-            arn: '${cf:infra-stream-sync-reports.userTableStreamArn}',
+            arn: '${cf:reportsStack-${self:provider.stage}.userTableStreamArn}',
             batchSize: 500,
             startingPosition: 'LATEST',
             functionResponseType: 'ReportBatchItemFailures',
             maximumRetryAttempts: 10,
             destinations: {
-              onFailure: '${cf:infra-stream-sync-reports.testQueueArn}'
+              onFailure:
+                '${cf:reportsStack-${self:provider.stage}.testQueueArn}'
             }
           }
         }
@@ -51,7 +53,7 @@ const serverlessConfig: AWS = {
       events: [
         {
           sqs: {
-            arn: '${cf:infra-stream-sync-reports.testQueueArn}',
+            arn: '${cf:reportsStack-${self:provider.stage}.testQueueArn}',
             batchSize: 100,
             maximumBatchingWindow: 30,
             functionResponseType: 'ReportBatchItemFailures',
@@ -65,8 +67,9 @@ const serverlessConfig: AWS = {
       timeout: 29,
       environment: {
         DATABASE_SECRET_NAME:
-          '${cf:infra-stream-sync-reports.databaseSecretName}',
-        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}'
+          '${cf:reportsStack-${self:provider.stage}.databaseSecretName}',
+        DATABASE_HOSTNAME:
+          '${cf:reportsStack-${self:provider.stage}.databaseHostname}'
       },
       events: [
         {
@@ -82,9 +85,11 @@ const serverlessConfig: AWS = {
       timeout: 8,
       environment: {
         DATABASE_SECRET_NAME:
-          '${cf:infra-stream-sync-reports.databaseSecretName}',
-        DATABASE_HOSTNAME: '${cf:infra-stream-sync-reports.databaseHostname}',
-        REDIS_HOSTNAME: '${cf:infra-stream-sync-reports.redisHostname}'
+          '${cf:reportsStack-${self:provider.stage}.databaseSecretName}',
+        DATABASE_HOSTNAME:
+          '${cf:reportsStack-${self:provider.stage}.databaseHostname}',
+        REDIS_HOSTNAME:
+          '${cf:reportsStack-${self:provider.stage}.redisHostname}'
       },
       events: [
         {

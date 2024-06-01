@@ -31,24 +31,25 @@ new BackendPipelineStack(app, `backendPipelineStack-${stage}`, {
   env
 });
 
-// const reportsStack = new ReportsStack(app, 'reportsStack', {
-//   env,
-//   stackName: 'infra-stream-sync-reports'
+// const reportsStack = new ReportsStack(app, `reportsStack-${stage}`, {
+//   env
 // });
 
-// const usersStack = new UsersStack(app, 'usersStack', {
-//   env,
-//   stackName: 'infra-stream-sync-users'
+// const usersStack = new UsersStack(app, `usersStack-${stage}`, {
+//   env
 // });
 
 // reportsStack.addDependency(usersStack);
 
-// const permissionsStack = new PermissionsStack(app, 'permissionsStack', {
-//   env,
-//   usersPolicyStatements: usersStack.policyStatements,
-//   reportsPolicyStatements: reportsStack.policyStatements,
-//   stackName: 'infra-stream-sync-permissions'
-// });
+// const permissionsStack = new PermissionsStack(
+//   app,
+//   `permissionsStack-${stage}`,
+//   {
+//     env,
+//     usersPolicyStatements: usersStack.policyStatements,
+//     reportsPolicyStatements: reportsStack.policyStatements
+//   }
+// );
 
 // permissionsStack.addDependency(usersStack);
 // permissionsStack.addDependency(reportsStack);

@@ -9,7 +9,7 @@ const serverlessConfig: AWS = {
     runtime: 'nodejs18.x',
     architecture: 'arm64',
     iam: {
-      role: '${cf:infra-stream-sync-permissions.usersRoleArn}'
+      role: '${cf:permissionsStack-${self:provider.stage}.usersRoleArn}'
     }
   },
   functions: {
@@ -21,9 +21,10 @@ const serverlessConfig: AWS = {
     createUsers: {
       handler: 'src/lambdas/publishers/create.handler',
       environment: {
-        USER_TABLE_NAME: '${cf:infra-stream-sync-users.userTableName}',
+        USER_TABLE_NAME:
+          '${cf:usersStack-${self:provider.stage}.userTableName}',
         UNPROCESSED_USERS_QUEUE_URL:
-          '${cf:infra-stream-sync-users.unprocessedUsersQueueUrl}'
+          '${cf:usersStack-${self:provider.stage}.unprocessedUsersQueueUrl}'
       },
       timeout: 29,
       memorySize: 512,
@@ -43,7 +44,7 @@ const serverlessConfig: AWS = {
       events: [
         {
           sqs: {
-            arn: '${cf:infra-stream-sync-users.unprocessedUsersQueueArn}'
+            arn: '${cf:usersStack-${self:provider.stage}.unprocessedUsersQueueArn}'
           }
         }
       ]

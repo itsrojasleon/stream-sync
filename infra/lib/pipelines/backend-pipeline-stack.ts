@@ -52,7 +52,7 @@ export class BackendPipelineStack extends cdk.Stack {
           Push: [
             {
               Branches: {
-                Includes: ['main']
+                Includes: [branches.test, branches.prod]
               },
               FilePaths: {
                 Includes: ['backend/**']
@@ -69,12 +69,16 @@ export class BackendPipelineStack extends cdk.Stack {
   private createBuildProject(path: string) {
     return new codebuild.PipelineProject(this, `deploy${path}`, {
       buildSpec: codebuild.BuildSpec.fromSourceFilename(
-        'backend/depl/buildspec.yml'
+        `backend/${path}/buildspec.yml`
       ),
       environment: {
         environmentVariables: {
-          STAGE: { value: this.props.env },
-          SERVICE_PATH: { value: path }
+          STAGE: {
+            value: this.props.env.stage
+          },
+          SERVICE_PATH: {
+            value: path
+          }
         },
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_5 // TODO: Check if this is the right image.
       }
