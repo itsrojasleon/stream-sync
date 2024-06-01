@@ -2,6 +2,7 @@
 import * as cdk from 'aws-cdk-lib';
 import 'source-map-support/register';
 import { git } from '../constants';
+import { BackendPipelineStack } from '../lib/pipelines/backend-pipeline-stack';
 import { CodestarConnectionStack } from '../lib/pipelines/codestart-connection-stack';
 import { Stages } from '../types';
 
@@ -22,17 +23,13 @@ const env = {
 const { codestarConnection } = new CodestarConnectionStack(
   app,
   `codestarConnectionStack-${stage}`,
-  {
-    env
-    // stackName: `infra-stream-sync-codestar-connection-${stage}`
-  }
+  { env }
 );
 
-// new BackendPipelineStack(app, 'backendPipelineStack', {
-//   codestarConnectionArn: codestarConnection.attrConnectionArn,
-//   env,
-//   stackName: `infra-stream-sync-backend-pipeline-${stage}`
-// });
+new BackendPipelineStack(app, `backendPipelineStack-${stage}`, {
+  codestarConnectionArn: codestarConnection.attrConnectionArn,
+  env
+});
 
 // const reportsStack = new ReportsStack(app, 'reportsStack', {
 //   env,

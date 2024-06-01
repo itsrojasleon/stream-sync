@@ -54,7 +54,7 @@ export class BackendPipelineStack extends cdk.Stack {
               Branches: {
                 Includes: ['main']
               },
-              FilterPaths: {
+              FilePaths: {
                 Includes: ['backend/**']
               }
             }
@@ -68,7 +68,9 @@ export class BackendPipelineStack extends cdk.Stack {
 
   private createBuildProject(path: string) {
     return new codebuild.PipelineProject(this, `deploy${path}`, {
-      buildSpec: codebuild.BuildSpec.fromSourceFilename('depl/buildspec.yml'),
+      buildSpec: codebuild.BuildSpec.fromSourceFilename(
+        'backend/depl/buildspec.yml'
+      ),
       environment: {
         environmentVariables: {
           STAGE: { value: this.props.env },
@@ -82,12 +84,6 @@ export class BackendPipelineStack extends cdk.Stack {
   private createBuildAction(path: string, input: codepipeline.Artifact) {
     const project = this.createBuildProject(path);
 
-    // project.addToRolePolicy(
-    //   new iam.PolicyStatement({
-    //     actions: ["cloudformation:*"],
-    //     resources: ["*"],
-    //   }),
-    // );
     return new codepipelineActions.CodeBuildAction({
       actionName: `deploy_${path}`,
       project,

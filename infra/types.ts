@@ -12,7 +12,7 @@ export interface Environment extends cdk.Environment {
   branch: Branch;
 }
 
-interface StackProps extends cdk.StackProps {
+export interface StackProps extends cdk.StackProps {
   env: Environment;
 }
 
