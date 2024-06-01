@@ -128,7 +128,6 @@ export const handleUnprocessedItemsTransform = (queueUrl: string) => {
   return new Transform({
     objectMode: true,
     async transform(users: User[], _, callback) {
-      console.log({ users });
       try {
         const chunkSize = 10;
         const chunks = [];
