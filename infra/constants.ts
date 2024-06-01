@@ -3,10 +3,7 @@ import { Branch, Stages } from './types';
 type GitConfig = {
   branches: Record<Stages, Branch>;
   owner: string;
-  repos: {
-    backend: string;
-    infra: string;
-  };
+  repo: string;
 };
 
 export const git: GitConfig = {
@@ -15,8 +12,5 @@ export const git: GitConfig = {
     [Stages.Test]: 'test',
     [Stages.Prod]: 'main'
   },
-  repos: {
-    backend: 'cdk-pipelines-backend',
-    infra: 'cdk-pipelines-infra'
-  }
+  repo: 'stream-sync'
 };
