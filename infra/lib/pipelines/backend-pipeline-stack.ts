@@ -12,7 +12,7 @@ export class BackendPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, public props: PipelineStackProps) {
     super(scope, id, props);
 
-    const { owner, repos, branches } = git;
+    const { owner, repo, branches } = git;
 
     const sourceArtifact = new codepipeline.Artifact();
 
@@ -21,8 +21,8 @@ export class BackendPipelineStack extends cdk.Stack {
         actionName: 'Source',
         connectionArn: props.codestarConnectionArn,
         output: sourceArtifact,
-        owner: owner,
-        repo: repos.backend,
+        owner,
+        repo,
         branch: branches[props.env.stage]
       });
 
