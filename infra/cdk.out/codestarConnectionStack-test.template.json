@@ -1,0 +1,119 @@
+{
+ "Resources": {
+  "CodeStarRole55B580CB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codestar.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "codestarConnectionStack-test/CodeStarRole/Resource"
+   }
+  },
+  "CodeStarRoleDefaultPolicy461E7BFB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "codestar-connections:UseConnection",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "codestarConnection",
+         "ConnectionArn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CodeStarRoleDefaultPolicy461E7BFB",
+    "Roles": [
+     {
+      "Ref": "CodeStarRole55B580CB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "codestarConnectionStack-test/CodeStarRole/DefaultPolicy/Resource"
+   }
+  },
+  "codestarConnection": {
+   "Type": "AWS::CodeStarConnections::Connection",
+   "Properties": {
+    "ConnectionName": "github-connection-test",
+    "ProviderType": "GitHub"
+   },
+   "Metadata": {
+    "aws:cdk:path": "codestarConnectionStack-test/codestarConnection"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2MQQ6CMBAA38K9rNIQP9APmPoAU7clWSi7CVskpuHvRjGeZuYyFrq+h3MTNm0xTm2mB9RbCTiZsOm9UpihesnJuIG/vEomfH3ysN2gxKQlLCjMCQsJK7iB3T9345PKuuBx+fluWGKCUU9P28EFbDMqUbusXGhO4A++AfySou2hAAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "codestarConnectionStack-test/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttcodestarConnectionConnectionArn33204B1F": {
+   "Value": {
+    "Fn::GetAtt": [
+     "codestarConnection",
+     "ConnectionArn"
+    ]
+   },
+   "Export": {
+    "Name": "codestarConnectionStack-test:ExportsOutputFnGetAttcodestarConnectionConnectionArn33204B1F"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

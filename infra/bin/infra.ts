@@ -22,17 +22,13 @@ const env = {
 
 const { codestarConnection } = new CodestarConnectionStack(
   app,
-  'codestarConnectionStack',
-  {
-    env,
-    stackName: `infra-stream-sync-codestar-connection-${stage}`
-  }
+  `codestarConnectionStack-${stage}`,
+  { env }
 );
 
-new BackendPipelineStack(app, 'backendPipelineStack', {
+new BackendPipelineStack(app, `backendPipelineStack-${stage}`, {
   codestarConnectionArn: codestarConnection.attrConnectionArn,
-  env,
-  stackName: `infra-stream-sync-backend-pipeline-${stage}`
+  env
 });
 
 // const reportsStack = new ReportsStack(app, 'reportsStack', {
