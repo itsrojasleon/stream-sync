@@ -1,36 +1,58 @@
 #!/usr/bin/env node
-
 import * as cdk from 'aws-cdk-lib';
 import 'source-map-support/register';
-import { PermissionsStack } from '../lib/common/permissions-stack';
-import { ReportsStack } from '../lib/reports-stack';
-import { UsersStack } from '../lib/users-stack';
+import { git } from '../constants';
+import { BackendPipelineStack } from '../lib/pipelines/backend-pipeline-stack';
+import { CodestarConnectionStack } from '../lib/pipelines/codestart-connection-stack';
+import { Stages } from '../types';
 
 const app = new cdk.App();
+const stage: Stages = app.node.tryGetContext('stage');
+
+if (![Stages.Test, Stages.Prod].includes(stage)) {
+  throw new Error('Invalid stage');
+}
 
 const env = {
+  stage,
+  branch: git.branches[stage],
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION
 };
 
-const reportsStack = new ReportsStack(app, 'reportsStack', {
+const { codestarConnection } = new CodestarConnectionStack(
+  app,
+  'codestarConnectionStack',
+  {
+    env,
+    stackName: `infra-stream-sync-codestar-connection-${stage}`
+  }
+);
+
+new BackendPipelineStack(app, 'backendPipelineStack', {
+  codestarConnectionArn: codestarConnection.attrConnectionArn,
   env,
-  stackName: 'infra-stream-sync-reports'
+  stackName: `infra-stream-sync-backend-pipeline-${stage}`
 });
 
-const usersStack = new UsersStack(app, 'usersStack', {
-  env,
-  stackName: 'infra-stream-sync-users'
-});
+// const reportsStack = new ReportsStack(app, 'reportsStack', {
+//   env,
+//   stackName: 'infra-stream-sync-reports'
+// });
 
-reportsStack.addDependency(usersStack);
+// const usersStack = new UsersStack(app, 'usersStack', {
+//   env,
+//   stackName: 'infra-stream-sync-users'
+// });
 
-const permissionsStack = new PermissionsStack(app, 'permissionsStack', {
-  env,
-  usersPolicyStatements: usersStack.policyStatements,
-  reportsPolicyStatements: reportsStack.policyStatements,
-  stackName: 'infra-stream-sync-permissions'
-});
+// reportsStack.addDependency(usersStack);
 
-permissionsStack.addDependency(usersStack);
-permissionsStack.addDependency(reportsStack);
+// const permissionsStack = new PermissionsStack(app, 'permissionsStack', {
+//   env,
+//   usersPolicyStatements: usersStack.policyStatements,
+//   reportsPolicyStatements: reportsStack.policyStatements,
+//   stackName: 'infra-stream-sync-permissions'
+// });
+
+// permissionsStack.addDependency(usersStack);
+// permissionsStack.addDependency(reportsStack);

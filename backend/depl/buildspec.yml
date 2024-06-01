@@ -1,0 +1,13 @@
+version: '0.2'
+phases:
+  install:
+    runtime-versions:
+      nodejs: '20.x'
+    commands:
+      - curl -fsSL https://bun.sh/install | bash
+      - bun --version
+      - cd $SERVICE_PATH && bun install
+      # TODO: Tests.
+  build:
+    commands:
+      - cd $SERVICE_PATH && serverless deploy --stage $STAGE
