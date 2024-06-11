@@ -1,0 +1,63 @@
+digraph G {
+  # Arrows represent an "unlocks" relationship (opposite of dependency). So chosen
+  # because the layout looks more natural that way.
+  # To represent subgraph dependencies, subgraphs are represented by BEGIN/END nodes.
+  # To render: `dot -Tsvg infraPipelineStacktestpipelineE4B650DF.dot > graph.svg`, open in a browser.
+  node [shape="box"];
+"BEGIN Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Build.synth";
+"Source.itsrojasleon/stream-sync" -> "Build.synth";
+"BEGIN Build" -> "Build.synth";
+"Build.synth" -> "END Build";
+"BEGIN UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate";
+"Build.synth" -> "UpdatePipeline.SelfMutate";
+"BEGIN UpdatePipeline" -> "UpdatePipeline.SelfMutate";
+"UpdatePipeline.SelfMutate" -> "END UpdatePipeline";
+"BEGIN Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Assets.FileAsset1";
+"UpdatePipeline.SelfMutate" -> "Assets.FileAsset1";
+"BEGIN Assets" -> "Assets.FileAsset1";
+"Assets.FileAsset1" -> "END Assets";
+"BEGIN app" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate" -> "BEGIN app";
+"BEGIN app.usersStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app.usersStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"app.usersStack-test.Deploy";
+"app.usersStack-test.Prepare" -> "app.usersStack-test.Deploy";
+"app.usersStack-test.Prepare";
+"Build.synth" -> "app.usersStack-test.Prepare";
+"BEGIN app.usersStack-test" -> "app.usersStack-test.Prepare";
+"app.usersStack-test.Deploy" -> "END app.usersStack-test";
+"BEGIN app.reportsStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app.reportsStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app.usersStack-test" -> "BEGIN app.reportsStack-test";
+"app.reportsStack-test.Deploy";
+"app.reportsStack-test.Prepare" -> "app.reportsStack-test.Deploy";
+"app.reportsStack-test.Prepare";
+"Build.synth" -> "app.reportsStack-test.Prepare";
+"Assets.FileAsset1" -> "app.reportsStack-test.Prepare";
+"BEGIN app.reportsStack-test" -> "app.reportsStack-test.Prepare";
+"app.reportsStack-test.Deploy" -> "END app.reportsStack-test";
+"BEGIN app.permissionsStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app.permissionsStack-test" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END app.usersStack-test" -> "BEGIN app.permissionsStack-test";
+"END app.reportsStack-test" -> "BEGIN app.permissionsStack-test";
+"app.permissionsStack-test.Deploy";
+"app.permissionsStack-test.Prepare" -> "app.permissionsStack-test.Deploy";
+"app.permissionsStack-test.Prepare";
+"Build.synth" -> "app.permissionsStack-test.Prepare";
+"BEGIN app.permissionsStack-test" -> "app.permissionsStack-test.Prepare";
+"app.permissionsStack-test.Deploy" -> "END app.permissionsStack-test";
+"BEGIN app" -> "BEGIN app.usersStack-test";
+"END app.permissionsStack-test" -> "END app";
+"BEGIN Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Source.itsrojasleon/stream-sync";
+"BEGIN Source" -> "Source.itsrojasleon/stream-sync";
+"Source.itsrojasleon/stream-sync" -> "END Source";
+}

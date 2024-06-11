@@ -19,3 +19,7 @@ export interface StackProps extends cdk.StackProps {
 export interface PipelineStackProps extends StackProps {
   codestarConnectionArn: string;
 }
+
+export interface StageProps extends cdk.StackProps {
+  env: Omit<Environment, 'branch'>;
+}

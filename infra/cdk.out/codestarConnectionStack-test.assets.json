@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "5bfda6ab91b54e157a404ce29da704c4fe7dbb501714b4f14cbab0f01f03d786": {
+    "cff82a69be9ded821d53172ef1f6769ff1a74562bb65e67b308bf6af10495bbb": {
       "source": {
         "path": "codestarConnectionStack-test.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "175749225105-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-175749225105-us-east-1",
-          "objectKey": "5bfda6ab91b54e157a404ce29da704c4fe7dbb501714b4f14cbab0f01f03d786.json",
+          "objectKey": "cff82a69be9ded821d53172ef1f6769ff1a74562bb65e67b308bf6af10495bbb.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::175749225105:role/cdk-hnb659fds-file-publishing-role-175749225105-us-east-1"
         }

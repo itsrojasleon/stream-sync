@@ -1,0 +1,164 @@
+{
+ "Resources": {
+  "usersTable12EF4ADD": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "StreamSpecification": {
+     "StreamViewType": "NEW_IMAGE"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/usersStack-test/usersTable/Resource"
+   }
+  },
+  "unprocessedUsersDLQ90787D09": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/usersStack-test/unprocessedUsersDLQ/Resource"
+   }
+  },
+  "unprocessedUsersQueueD6A2DC06": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "RedrivePolicy": {
+     "deadLetterTargetArn": {
+      "Fn::GetAtt": [
+       "unprocessedUsersDLQ90787D09",
+       "Arn"
+      ]
+     },
+     "maxReceiveCount": 3
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/usersStack-test/unprocessedUsersQueue/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zXIWwrCMBBA0bX0PxltqG7ABYjVf8ljhPSRaCdjKSF7FyN+3cNV0HYH2Dd6JWndKCdvIF+TtqPQK92z24KeozOQb9pMKE6PUFEEvQjyhZHrrChF9EiRF1vfmdOT01f/W0SIDmGg3Vu1cATVDOS9XDgkPyP0v34AmsGGDJQAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/usersStack-test/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "userTableName": {
+   "Value": {
+    "Ref": "usersTable12EF4ADD"
+   }
+  },
+  "userTableStreamArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "StreamArn"
+    ]
+   },
+   "Export": {
+    "Name": "userTableStreamArn"
+   }
+  },
+  "unprocessedUsersQueueArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "unprocessedUsersQueueD6A2DC06",
+     "Arn"
+    ]
+   }
+  },
+  "unprocessedUsersQueueUrl": {
+   "Value": {
+    "Ref": "unprocessedUsersQueueD6A2DC06"
+   }
+  },
+  "ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+   }
+  },
+  "ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersTable12EF4ADD",
+     "StreamArn"
+    ]
+   },
+   "Export": {
+    "Name": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+   }
+  },
+  "ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B": {
+   "Value": {
+    "Fn::GetAtt": [
+     "unprocessedUsersQueueD6A2DC06",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "app-usersStack-test:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

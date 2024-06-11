@@ -6,7 +6,7 @@ const serverlessConfig: AWS = {
   provider: {
     name: 'aws',
     stage: '${opt:stage, "test"}',
-    runtime: 'nodejs18.x',
+    runtime: 'nodejs20.x',
     architecture: 'arm64',
     iam: {
       role: '${cf:permissionsStack-${self:provider.stage}.usersRoleArn}'

@@ -1,54 +1,5 @@
 {
  "Resources": {
-  "CodeStarRole55B580CB": {
-   "Type": "AWS::IAM::Role",
-   "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "codestar.amazonaws.com"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "codestarConnectionStack-test/CodeStarRole/Resource"
-   }
-  },
-  "CodeStarRoleDefaultPolicy461E7BFB": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "codestar-connections:UseConnection",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "codestarConnection",
-         "ConnectionArn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "CodeStarRoleDefaultPolicy461E7BFB",
-    "Roles": [
-     {
-      "Ref": "CodeStarRole55B580CB"
-     }
-    ]
-   },
-   "Metadata": {
-    "aws:cdk:path": "codestarConnectionStack-test/CodeStarRole/DefaultPolicy/Resource"
-   }
-  },
   "codestarConnection": {
    "Type": "AWS::CodeStarConnections::Connection",
    "Properties": {
@@ -62,7 +13,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2MQQ6CMBAA38K9rNIQP9APmPoAU7clWSi7CVskpuHvRjGeZuYyFrq+h3MTNm0xTm2mB9RbCTiZsOm9UpihesnJuIG/vEomfH3ysN2gxKQlLCjMCQsJK7iB3T9345PKuuBx+fluWGKCUU9P28EFbDMqUbusXGhO4A++AfySou2hAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/z3HwQ2DMAwAwFn4J6ZE0AWyAQyAUsdIBmpLcSiPqrv3gcTrdAG6foBHk07zmDe/8wu+U024uXTajJrJaiqoIoSVVQziIvGui4uMZHoUpJ8TzQSrtZ/QwRNCsxqzL4dUfhOMl392yAVScgAAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "codestarConnectionStack-test/CDKMetadata/Default"

@@ -6,9 +6,7 @@ phases:
     commands:
       - curl -fsSL https://bun.sh/install | bash
       - export PATH=$HOME/.bun/bin:$PATH
-      - bun --version
       - cd $SERVICE_PATH && bun install
-      - ls -al
   build:
     commands:
-      - cd $SERVICE_PATH && bun run deploy -- --stage $STAGE
+      - bun run deploy -- --stage $STAGE

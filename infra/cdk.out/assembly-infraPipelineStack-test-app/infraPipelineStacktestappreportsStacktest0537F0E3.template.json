@@ -1,0 +1,1211 @@
+{
+ "Resources": {
+  "vpcA2121C38": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/Resource"
+   }
+  },
+  "vpcprivatesubnetSubnet1SubnetD01ADF6B": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1/Subnet"
+   }
+  },
+  "vpcprivatesubnetSubnet1RouteTable0C52DAE1": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1/RouteTable"
+   }
+  },
+  "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet1RouteTable0C52DAE1"
+    },
+    "SubnetId": {
+     "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "vpcpublicsubnetSubnet1NATGatewayB99B76CB"
+    },
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet1RouteTable0C52DAE1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet1/DefaultRoute"
+   }
+  },
+  "vpcprivatesubnetSubnet2SubnetAD6E7C1E": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2/Subnet"
+   }
+  },
+  "vpcprivatesubnetSubnet2RouteTableBC84F013": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2/RouteTable"
+   }
+  },
+  "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet2RouteTableBC84F013"
+    },
+    "SubnetId": {
+     "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "vpcprivatesubnetSubnet2DefaultRoute7BF2E662": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "vpcpublicsubnetSubnet1NATGatewayB99B76CB"
+    },
+    "RouteTableId": {
+     "Ref": "vpcprivatesubnetSubnet2RouteTableBC84F013"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/private subnetSubnet2/DefaultRoute"
+   }
+  },
+  "vpcpublicsubnetSubnet1Subnet00D7FC63": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/Subnet"
+   }
+  },
+  "vpcpublicsubnetSubnet1RouteTable8125563E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/RouteTable"
+   }
+  },
+  "vpcpublicsubnetSubnet1RouteTableAssociation31DC149C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet1RouteTable8125563E"
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "vpcpublicsubnetSubnet1DefaultRoute4347D983": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet1RouteTable8125563E"
+    }
+   },
+   "DependsOn": [
+    "vpcVPCGW7984C166"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/DefaultRoute"
+   }
+  },
+  "vpcpublicsubnetSubnet1EIP2ACC3706": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/EIP"
+   }
+  },
+  "vpcpublicsubnetSubnet1NATGatewayB99B76CB": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "vpcpublicsubnetSubnet1EIP2ACC3706",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "vpcpublicsubnetSubnet1DefaultRoute4347D983",
+    "vpcpublicsubnetSubnet1RouteTableAssociation31DC149C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet1/NATGateway"
+   }
+  },
+  "vpcpublicsubnetSubnet2Subnet0D317893": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2/Subnet"
+   }
+  },
+  "vpcpublicsubnetSubnet2RouteTable915C41C6": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2/RouteTable"
+   }
+  },
+  "vpcpublicsubnetSubnet2RouteTableAssociation909CA1C6": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet2RouteTable915C41C6"
+    },
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet2Subnet0D317893"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "vpcpublicsubnetSubnet2DefaultRoute39C23CE6": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "RouteTableId": {
+     "Ref": "vpcpublicsubnetSubnet2RouteTable915C41C6"
+    }
+   },
+   "DependsOn": [
+    "vpcVPCGW7984C166"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/public subnetSubnet2/DefaultRoute"
+   }
+  },
+  "vpcIGWE57CBDCA": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/IGW"
+   }
+  },
+  "vpcVPCGW7984C166": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "vpcIGWE57CBDCA"
+    },
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/VPCGW"
+   }
+  },
+  "vpcRestrictDefaultSecurityGroupCustomResourceA6EBC6D0": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "vpcA2121C38",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "175749225105"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/vpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:us-east-1:175749225105:security-group/",
+             {
+              "Fn::GetAtt": [
+               "vpcA2121C38",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-175749225105-us-east-1",
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "../asset.ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a",
+    "aws:asset:property": "Code"
+   }
+  },
+  "VpcFlowLogsGroupC5F6A8C5": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLogsGroup/Resource"
+   }
+  },
+  "VpcFlowLogIAMRoleB4DCB624": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLog"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLog/IAMRole/Resource"
+   }
+  },
+  "VpcFlowLogIAMRoleDefaultPolicy7533133B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "VpcFlowLogsGroupC5F6A8C5",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "iam:PassRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "VpcFlowLogIAMRoleB4DCB624",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "VpcFlowLogIAMRoleDefaultPolicy7533133B",
+    "Roles": [
+     {
+      "Ref": "VpcFlowLogIAMRoleB4DCB624"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLog/IAMRole/DefaultPolicy/Resource"
+   }
+  },
+  "VpcFlowLogF72230C7": {
+   "Type": "AWS::EC2::FlowLog",
+   "Properties": {
+    "DeliverLogsPermissionArn": {
+     "Fn::GetAtt": [
+      "VpcFlowLogIAMRoleB4DCB624",
+      "Arn"
+     ]
+    },
+    "LogDestinationType": "cloud-watch-logs",
+    "LogGroupName": {
+     "Ref": "VpcFlowLogsGroupC5F6A8C5"
+    },
+    "ResourceId": {
+     "Ref": "vpcA2121C38"
+    },
+    "ResourceType": "VPC",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLog"
+     }
+    ],
+    "TrafficType": "ALL"
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/VpcFlowLog/FlowLog"
+   }
+  },
+  "databaseSecurityGroupC7B2A60C": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/databaseSecurityGroup/Resource"
+   }
+  },
+  "databaseSecurityGroupfrominfraPipelineStacktestappreportsStacktestlambdaSecurityGroupA3F7CAFF5432B0DAB62E": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow lambda functions access to the database",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "databaseSecurityGroupC7B2A60C",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "lambdaSecurityGroup2DB5E13D",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/databaseSecurityGroup/from infraPipelineStacktestappreportsStacktestlambdaSecurityGroupA3F7CAFF:5432"
+   }
+  },
+  "databaseSecurityGroupfrominfraPipelineStacktestappreportsStacktestec2InstanceSecurityGroup6821E3135432409C74BC": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow ec2 instance access to the database",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "databaseSecurityGroupC7B2A60C",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ec2InstanceSecurityGroup11D2F941",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/databaseSecurityGroup/from infraPipelineStacktestappreportsStacktestec2InstanceSecurityGroup6821E313:5432"
+   }
+  },
+  "redisSecurityGroupF1670DA3": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the redis",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/redisSecurityGroup/Resource"
+   }
+  },
+  "redisSecurityGroupfrominfraPipelineStacktestappreportsStacktestlambdaSecurityGroupA3F7CAFF6379BBBA80BA": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow lambda functions access to the redis",
+    "FromPort": 6379,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "redisSecurityGroupF1670DA3",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "lambdaSecurityGroup2DB5E13D",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/redisSecurityGroup/from infraPipelineStacktestappreportsStacktestlambdaSecurityGroupA3F7CAFF:6379"
+   }
+  },
+  "lambdaSecurityGroup2DB5E13D": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the lambda functions",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/lambdaSecurityGroup/Resource"
+   }
+  },
+  "ec2InstanceSecurityGroup11D2F941": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for the ec2 instances",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow SSH access from the internet",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "VpcId": {
+     "Ref": "vpcA2121C38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/ec2InstanceSecurityGroup/Resource"
+   }
+  },
+  "databaseSubnetsFA8AAF25": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnets for database database",
+    "SubnetIds": [
+     {
+      "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+     },
+     {
+      "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/Subnets/Default"
+   }
+  },
+  "infraPipelineStacktestappreportsStacktestdatabaseSecret1EEDE33C3fdaad7efa858a3daf9490cf0a702aeb": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Generated by the CDK for stack: ",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    },
+    "GenerateSecretString": {
+     "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+     "GenerateStringKey": "password",
+     "PasswordLength": 30,
+     "SecretStringTemplate": "{\"username\":\"postgres\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/Secret/Resource"
+   }
+  },
+  "databaseSecretAttachment5618DFB3": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "infraPipelineStacktestappreportsStacktestdatabaseSecret1EEDE33C3fdaad7efa858a3daf9490cf0a702aeb"
+    },
+    "TargetId": {
+     "Ref": "databaseEBDE4557"
+    },
+    "TargetType": "AWS::RDS::DBCluster"
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/Secret/Attachment/Resource"
+   }
+  },
+  "databaseEBDE4557": {
+   "Type": "AWS::RDS::DBCluster",
+   "Properties": {
+    "CopyTagsToSnapshot": true,
+    "DBClusterParameterGroupName": "default.aurora-postgresql14",
+    "DBSubnetGroupName": {
+     "Ref": "databaseSubnetsFA8AAF25"
+    },
+    "DeletionProtection": false,
+    "Engine": "aurora-postgresql",
+    "EngineVersion": "14.3",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "infraPipelineStacktestappreportsStacktestdatabaseSecret1EEDE33C3fdaad7efa858a3daf9490cf0a702aeb"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": "postgres",
+    "Port": 5432,
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "databaseSecurityGroupC7B2A60C",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/Resource"
+   }
+  },
+  "databaseinstance1636995F8": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "DBClusterIdentifier": {
+     "Ref": "databaseEBDE4557"
+    },
+    "DBInstanceClass": "db.t4g.medium",
+    "Engine": "aurora-postgresql",
+    "PromotionTier": 0,
+    "PubliclyAccessible": false
+   },
+   "DependsOn": [
+    "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA",
+    "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452",
+    "vpcprivatesubnetSubnet2DefaultRoute7BF2E662",
+    "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/instance1/Resource"
+   }
+  },
+  "databaseinstance200EF09AA": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "DBClusterIdentifier": {
+     "Ref": "databaseEBDE4557"
+    },
+    "DBInstanceClass": "db.t4g.medium",
+    "Engine": "aurora-postgresql",
+    "PromotionTier": 2,
+    "PubliclyAccessible": false
+   },
+   "DependsOn": [
+    "databaseinstance1636995F8",
+    "vpcprivatesubnetSubnet1DefaultRouteF69CF2BA",
+    "vpcprivatesubnetSubnet1RouteTableAssociation4E7ED452",
+    "vpcprivatesubnetSubnet2DefaultRoute7BF2E662",
+    "vpcprivatesubnetSubnet2RouteTableAssociation44F225EF"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/database/instance2/Resource"
+   }
+  },
+  "redis": {
+   "Type": "AWS::ElastiCache::ServerlessCache",
+   "Properties": {
+    "Description": "Redis serverless cluster",
+    "Engine": "redis",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "redisSecurityGroupF1670DA3",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServerlessCacheName": "stream-sync-redis",
+    "SubnetIds": [
+     {
+      "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+     },
+     {
+      "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/redis"
+   }
+  },
+  "ec2InstanceInstanceRoleF1811974": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/ec2Instance"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/ec2Instance/InstanceRole/Resource"
+   }
+  },
+  "ec2InstanceInstanceProfileD91A9EF4": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "ec2InstanceInstanceRoleF1811974"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/ec2Instance/InstanceProfile"
+   }
+  },
+  "ec2InstanceF91CE75A": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "IamInstanceProfile": {
+     "Ref": "ec2InstanceInstanceProfileD91A9EF4"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmarm64gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t4g.micro",
+    "KeyName": "ec2-key-pair",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "ec2InstanceSecurityGroup11D2F941",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "vpcpublicsubnetSubnet1Subnet00D7FC63"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "infraPipelineStack-test/app/reportsStack-test/ec2Instance"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "ec2InstanceInstanceRoleF1811974"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/ec2Instance/Resource"
+   }
+  },
+  "testQueue601B0FCD": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600,
+    "ReceiveMessageWaitTimeSeconds": 20,
+    "VisibilityTimeout": 60
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/testQueue/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31RwW7bMAz9lt4VrQ3a3ROnLQIUnRoXuQ60wrhqZSkjqQSF4X8fLM9xUGA98fHxkXqk5vrm9k5fX8GJZ3b3MfOu0m0pYD8UnPh3i3au2+3BqmIftqZQhtwRBMtUBZSenNAmJsFXqDxO/MQtmKN1IC6Gs1iZVHlnpxH3a9OHZ5BHEDzBZ5+tgyAFvKS2pviXLUTAvjUYRD34eHqKdV8fYYk2kZPPR4rpkF19S6xDTcis1oEFgsXh9QF3yseadfsU63PziDvloNHtJg6r52iidzabndA4y1DcO4+doh3rdgUCFTAWPrEgqeEc50dWy0tiFJdoabjZajk25mTyy1nCDQSokXQ7bNt3DeEVqEa5OOBZ8LXSKfTA4izYN9RZRkckj8xFTyn+w7p9SZjy/hl0ndogx0T9GRNLbKZ0H/5TMhSPboe0BEa1YEYpBWoX8qf+SnJI2aUBggYFqVMh7lC/84/j/Eb/1POrd3ZuRimIa1BvhvgX7K4WtuQCAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/reportsStack-test/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "privateSubnet1Id": {
+   "Value": {
+    "Ref": "vpcprivatesubnetSubnet1SubnetD01ADF6B"
+   }
+  },
+  "privateSubnet2Id": {
+   "Value": {
+    "Ref": "vpcprivatesubnetSubnet2SubnetAD6E7C1E"
+   }
+  },
+  "databaseHostname": {
+   "Value": {
+    "Fn::GetAtt": [
+     "databaseEBDE4557",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "databaseName": {
+   "Value": {
+    "Ref": "databaseEBDE4557"
+   }
+  },
+  "databaseSecretName": {
+   "Value": {
+    "Fn::Join": [
+     "-",
+     [
+      {
+       "Fn::Select": [
+        0,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "infraPipelineStacktestappreportsStacktestdatabaseSecret1EEDE33C3fdaad7efa858a3daf9490cf0a702aeb"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "Fn::Select": [
+        1,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "infraPipelineStacktestappreportsStacktestdatabaseSecret1EEDE33C3fdaad7efa858a3daf9490cf0a702aeb"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "userTableStreamArn": {
+   "Value": {
+    "Fn::ImportValue": "userTableStreamArn"
+   }
+  },
+  "lambdaSecurityGroupId": {
+   "Value": {
+    "Fn::GetAtt": [
+     "lambdaSecurityGroup2DB5E13D",
+     "GroupId"
+    ]
+   }
+  },
+  "testQueueArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "testQueue601B0FCD",
+     "Arn"
+    ]
+   }
+  },
+  "redisHostname": {
+   "Value": {
+    "Fn::GetAtt": [
+     "redis",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA": {
+   "Value": {
+    "Ref": "databaseSecretAttachment5618DFB3"
+   },
+   "Export": {
+    "Name": "app-reportsStack-test:ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
+   }
+  },
+  "ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3": {
+   "Value": {
+    "Fn::GetAtt": [
+     "testQueue601B0FCD",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "app-reportsStack-test:ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmarm64gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-arm64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

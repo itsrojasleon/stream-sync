@@ -3,7 +3,8 @@ import * as cdk from 'aws-cdk-lib';
 import 'source-map-support/register';
 import { git } from '../constants';
 import { BackendPipelineStack } from '../lib/pipelines/backend-pipeline-stack';
-import { CodestarConnectionStack } from '../lib/pipelines/codestart-connection-stack';
+import { CodestarConnectionStack } from '../lib/pipelines/codestar-connection-stack';
+import { InfraPipelineStack } from '../lib/pipelines/infra-pipeline-stack';
 import { Stages } from '../types';
 
 const app = new cdk.App();
@@ -23,7 +24,9 @@ const env = {
 const { codestarConnection } = new CodestarConnectionStack(
   app,
   `codestarConnectionStack-${stage}`,
-  { env }
+  {
+    env
+  }
 );
 
 new BackendPipelineStack(app, `backendPipelineStack-${stage}`, {
@@ -31,25 +34,7 @@ new BackendPipelineStack(app, `backendPipelineStack-${stage}`, {
   env
 });
 
-// const reportsStack = new ReportsStack(app, `reportsStack-${stage}`, {
-//   env
-// });
-
-// const usersStack = new UsersStack(app, `usersStack-${stage}`, {
-//   env
-// });
-
-// reportsStack.addDependency(usersStack);
-
-// const permissionsStack = new PermissionsStack(
-//   app,
-//   `permissionsStack-${stage}`,
-//   {
-//     env,
-//     usersPolicyStatements: usersStack.policyStatements,
-//     reportsPolicyStatements: reportsStack.policyStatements
-//   }
-// );
-
-// permissionsStack.addDependency(usersStack);
-// permissionsStack.addDependency(reportsStack);
+new InfraPipelineStack(app, `infraPipelineStack-${stage}`, {
+  codestarConnectionArn: codestarConnection.attrConnectionArn,
+  env
+});

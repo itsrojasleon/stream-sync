@@ -19,10 +19,10 @@ export class BackendPipelineStack extends cdk.Stack {
     const sourceAction =
       new codepipelineActions.CodeStarConnectionsSourceAction({
         actionName: 'Source',
-        connectionArn: props.codestarConnectionArn,
-        output: sourceArtifact,
         owner,
         repo,
+        connectionArn: props.codestarConnectionArn,
+        output: sourceArtifact,
         branch: branches[props.env.stage]
       });
 
@@ -67,7 +67,7 @@ export class BackendPipelineStack extends cdk.Stack {
   }
 
   private createBuildProject(path: string) {
-    return new codebuild.PipelineProject(this, `deploy${path}`, {
+    return new codebuild.PipelineProject(this, `deploy_${path}`, {
       buildSpec: codebuild.BuildSpec.fromSourceFilename(
         `backend/${path}/buildspec.yml`
       ),
@@ -77,10 +77,10 @@ export class BackendPipelineStack extends cdk.Stack {
             value: this.props.env.stage
           },
           SERVICE_PATH: {
-            value: path
+            value: `backend/${path}`
           }
         },
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_5 // TODO: Check if this is the right image.
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_ARM_3
       }
     });
   }

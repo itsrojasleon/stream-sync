@@ -1,0 +1,241 @@
+{
+ "Resources": {
+  "usersRole8DB1FBBC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "dynamodb:BatchWriteItem",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+         }
+        },
+        {
+         "Action": [
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListStreams"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+         }
+        },
+        {
+         "Action": "sqs:*",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "inlinePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/permissionsStack-test/usersRole/Resource"
+   }
+  },
+  "reportsRoleA2EC42E3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "secretsmanager:GetSecretValue",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-reportsStack-test:ExportsOutputRefdatabaseSecretAttachment5618DFB39FDA8BFA"
+         }
+        },
+        {
+         "Action": "sqs:*",
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::ImportValue": "app-reportsStack-test:ExportsOutputFnGetAtttestQueue601B0FCDArn6F8D51F3"
+          },
+          {
+           "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttunprocessedUsersQueueD6A2DC06ArnAF90954B"
+          }
+         ]
+        },
+        {
+         "Action": "dynamodb:BatchWriteItem",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDArn6C20E190"
+         }
+        },
+        {
+         "Action": [
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListStreams"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::ImportValue": "app-usersStack-test:ExportsOutputFnGetAttusersTable12EF4ADDStreamArn9C8B8DAF"
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "inlinePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/permissionsStack-test/reportsRole/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/y3JSwqAIBRA0bU011dJtYEWENgCwszg9dHoaQ2kvUef0YVzBeRFCVmiTuJ6mPmCPcTWKz0zdVKHaoUo3WJYPdqnF5OGXNj1K03wW/Dv+/Vi1g0GJkoPkUMFIpkIke/BelwNyK83OTcfUHYAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "infraPipelineStack-test/app/permissionsStack-test/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "usersRoleArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "usersRole8DB1FBBC",
+     "Arn"
+    ]
+   }
+  },
+  "reportsRoleArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "reportsRoleA2EC42E3",
+     "Arn"
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
